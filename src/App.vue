@@ -1,10 +1,12 @@
 <script setup>
 // import { RouterLink, RouterView } from 'vue-router'
 import EstudiantesList from './components/EstudiantesList.vue'
+import SideMenu from './components/SideMenu.vue';
 </script>
 
 <template>
   <div class="PageDivision">
+    <SideMenu />
     <EstudiantesList />
     <!-- <RouterView /> -->
   </div>
