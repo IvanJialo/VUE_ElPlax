@@ -7,7 +7,6 @@ export default {
   },
   methods: {
     toggleMenu() {
-       console.log(this.isMenuOpen); 
        this.isMenuOpen = !this.isMenuOpen;
     },
   },
@@ -179,7 +178,7 @@ export default {
           </div>
         </div>
     
-        <div class="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2">
+        <div class="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2 ">
           <form action="#">
             <button
               type="submit"
@@ -211,7 +210,7 @@ export default {
       </div>
     
       <div class="flex h-screen flex-1 flex-col justify-between border-e bg-white"
-            :class="isMenuOpen ? 'opacity-100 animate-fade-in-right max-w-[20vw]' : 'opacity-0'">
+            :class="isMenuOpen ? 'opacity-100 animate-fade-in-right sm:max-w-[20vw] max-w-[100vw]' : 'opacity-0'">
         <div class="px-4 py-6">
           <ul class="mt-14 space-y-1">
             <li>
