@@ -1,69 +1,59 @@
-// import { getProfesores } from './useDatabase'; // Cambia la ruta según la ubicación de tu módulo
+import { getProfesores } from './useDatabase'; // Cambia la ruta según la ubicación de tu módulo
 
-// let listItem = [];
+// Cargar datos de los profesores desde la base de datos de Turso
+let listItem = [];
 
-// // Cargar datos de los profesores desde la base de datos de Turso
-// document.addEventListener('DOMContentLoaded', async function () {
-//     try {
-//         const { fetchProfesores } = getProfesores(); // Obtener la función para cargar profesores
-//         const result = await fetchProfesores(); // Ejecutar la consulta
-//         listItem = result.rows; // Asignar los datos a listItem
-//         console.log('Datos cargados:', listItem);
-//     } catch (error) {
-//         console.error('Error al cargar profesores:', error);
-//     }
+async function loadProfesores() {
+    try {
+        const { fetchProfesores } = getProfesores(); // Obtener la función para cargar profesores
+        const result = await fetchProfesores(); // Ejecutar la consulta
+        listItem = result.rows; // Asignar los datos a listItem
+        console.log('Datos cargados:', listItem);
+    } catch (error) {
+        console.error('Error al cargar profesores:', error);
+    }
+}
 
-//     // Agregar el evento al botón solo después de cargar los datos
-//     const passwordButton = document.getElementById('iniciar-sesion');
-//     passwordButton.addEventListener('click', nextPassword);
-// });
+// Función de login para validar usuario y contraseña
+export async function login(userName, userPwd) {
+    if (!userName || userName.trim() === "") {
+        throw new Error('No se ha proporcionado un nombre de usuario');
+    }
 
-// // Variables para guardar el nombre de usuario y la contraseña
-// let userName;
-// let userPwd;
+    if (!userPwd || userPwd.trim() === "") {
+        throw new Error('No se ha proporcionado una contraseña');
+    }
 
-// // Función para validar la contraseña y mostrar el mensaje de bienvenida
-// function nextPassword() {
-//     userName = document.getElementById('user').value;
-//     userPwd = document.getElementById('password').value;
+    // Asegurarse de que los datos de los profesores estén cargados
+    if (listItem.length === 0) {
+        await loadProfesores();
+    }
 
-//     if (!userName || userName.trim() === "") {
-//         resetFields();
-//         alert('No se ha proporcionado un nombre de usuario');
-//         return;
-//     }
+    let isValidUser = false;
 
-//     if (!userPwd || userPwd.trim() === "") {
-//         resetFields();
-//         alert('No se ha proporcionado una contraseña');
-//         return;
-//     }
+    for (let i = 0; i < listItem.length; i++) {
+        const profesor = listItem[i];
+        if (!profesor || !profesor.nombre || !profesor.contrasena) {
+            console.error(`Error: datos incompletos en el elemento ${i}`);
+            continue;
+        }
 
-//     let comprovador = false;
-//     for (let i = 0; i < listItem.length; i++) {
-//         const profesor = listItem[i];
-//         if (!profesor || !profesor.nombre || !profesor.contrasena) {
-//             console.error(`Error: datos incompletos en el elemento ${i}`);
-//             continue;
-//         }
+        // Comprobar si el nombre de usuario y la contraseña coinciden
+        if (profesor.nombre === userName && profesor.contrasena === userPwd) {
+            isValidUser = true;
+            break;
+        }
+    }
 
-//         // Comprobar si el nombre de usuario y la contraseña coinciden
-//         if (profesor.nombre === userName && profesor.contrasena === userPwd) {
-//             resetFields();
-//             comprovador = true;
-//             window.location.href = "./html/home.html";
-//             break;
-//         }
-//     }
+    if (!isValidUser) {
+        throw new Error("Usuario o contraseña incorrectos.");
+    }
 
-//     if (!comprovador) {
-//         alert("Usuario o contraseña incorrectos.");
-//         resetFields();
-//     }
-// }
+    return { success: true, message: "Login exitoso" };
+}
 
-// // Función para resetear los campos de entrada
-// function resetFields() {
-//     document.getElementById('user').value = '';
-//     document.getElementById('password').value = '';
-// }
+// Exportar función para resetear campos (si es necesario en otros componentes)
+export function resetFields() {
+    document.getElementById('user').value = '';
+    document.getElementById('password').value = '';
+}
