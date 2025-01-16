@@ -6,8 +6,8 @@ import SideMenu from './components/SideMenu.vue';
 
 <template>
   <div class="PageDivision">
-    <!-- <SideMenu />
-    <EstudiantesYProfesoresList /> -->
+    <!-- <SideMenu /> -->
+    <!-- <EstudiantesYProfesoresList /> -->
     <RouterView />
   </div>
 </template>
@@ -15,7 +15,7 @@ import SideMenu from './components/SideMenu.vue';
 <style>
 .PageDivision {
   display: grid;
-  grid-template-rows: 2000px auto;
+  grid-template-rows: 800px auto;
   height: 100vh;
 }
 </style>

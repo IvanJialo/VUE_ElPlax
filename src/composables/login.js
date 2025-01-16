@@ -51,9 +51,3 @@ export async function login(userName, userPwd) {
 
     return { success: true, message: "Login exitoso" };
 }
-
-// Exportar función para resetear campos (si es necesario en otros componentes)
-export function resetFields() {
-    document.getElementById('user').value = '';
-    document.getElementById('password').value = '';
-}
