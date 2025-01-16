@@ -1,3 +1,30 @@
+<script>
+  import { login } from '@/composables/login';
+  import { RouterLink } from 'vue-router';
+  
+  export default {
+    data() {
+      return {
+        email: '', // Inicializamos la propiedad email
+        password: '', // Inicializamos la propiedad password
+      };
+    },
+    methods: {
+      async handleLogin() {
+        try {
+          const response = await login(this.email, this.password); // Usamos las propiedades definidas
+          console.log(response.message);
+          // Redirigir o realizar acciones después del login
+          alert('Login exitoso');
+        } catch (error) {
+          console.error(error.message);
+          alert(error.message); // Mostrar el error al usuario si es necesario
+        }
+      },
+    },
+  };
+  </script>
+  
 <template>
     <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-lg">
@@ -74,14 +101,14 @@
               </span>
             </div>
           </div>
-  
-          <button
-            type="submit"
-            class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
-          >
-            Sign in
-          </button>
-  
+          <RouterLink to="/ejemplo">
+            <button
+                type="submit"
+                class="block w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white"
+            >
+                Sign in
+            </button>
+          </RouterLink>
           <p class="text-center text-sm text-gray-500">
             No account?
             <a class="underline" href="#">Sign up</a>
@@ -91,29 +118,4 @@
     </div>
   </template>
   
-  <script>
-  import { login } from '@/composables/login';
-  
-  export default {
-    data() {
-      return {
-        email: '', // Inicializamos la propiedad email
-        password: '', // Inicializamos la propiedad password
-      };
-    },
-    methods: {
-      async handleLogin() {
-        try {
-          const response = await login(this.email, this.password); // Usamos las propiedades definidas
-          console.log(response.message);
-          // Redirigir o realizar acciones después del login
-          alert('Login exitoso');
-        } catch (error) {
-          console.error(error.message);
-          alert(error.message); // Mostrar el error al usuario si es necesario
-        }
-      },
-    },
-  };
-  </script>
   
