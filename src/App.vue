@@ -1,17 +1,15 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import EstudiantesYProfesoresList from './components/EstudiantesYProfesoresList.vue'
-import SideMenu from './components/SideMenu.vue';
+import { RouterLink, RouterView } from 'vue-router';
+import tablee from './components/Table.vue';
+
+const estudiante = null; // Simula un caso donde aún no hay datos
 </script>
 
 <template>
   <div class="PageDivision">
-    <!-- <SideMenu /> -->
-    <!-- <EstudiantesYProfesoresList /> -->
     <RouterView />
   </div>
 </template>
-
 <style>
 .PageDivision {
   display: grid;
