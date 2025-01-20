@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
-import tablee from './components/Table.vue';
+import tablee from './components/AllTable.vue';
 
 const estudiante = null; // Simula un caso donde aún no hay datos
 </script>
