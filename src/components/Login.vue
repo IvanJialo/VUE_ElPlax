@@ -18,7 +18,7 @@ export default {
       try {
         const response = await login(this.user, this.password); // Usamos las propiedades definidas
         // Redirigir a otra página después del login exitoso
-        this.router.push('/estudiantes');
+        this.router.push('/home');
       } catch (error) {
         console.error(error.message);
         alert(error.message); // Mostrar el error al usuario si es necesario

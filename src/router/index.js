@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../components/Login.vue'
 import ejemplo from '../components/EstudiantesYProfesoresList.vue'
-import tablaDeEstudiantes from '../views/TablaAlumnosView.vue'
+import HomeView from '@/views/HomeView.vue'
+// import tablaDeEstudiantes from '../views/TablaAlumnosView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,15 +13,15 @@ const router = createRouter({
       component: Login,
     },
     {
-      path: '/ejemplo',
-      name: 'ejemplo',
-      component: ejemplo,
+      path: '/home',
+      name: 'home',
+      component: HomeView,
     },
-    {
-      path: '/estudiantes',
-      name: 'estudiantes',
-      component: tablaDeEstudiantes,
-    },
+    // {
+    //   path: '/estudiantes',
+    //   name: 'estudiantes',
+    //   component: tablaDeEstudiantes,
+    // },
     // {
     //   path: '/about',
     //   name: 'about',

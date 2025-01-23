@@ -189,3 +189,35 @@ async function putEmpresaId(id, cif, nombre, telefono, email, direccion, capacid
     console.error('Error al actualizar empresas:', error); // Muestra errores en la consola
   }
 }
+
+export async function exportCSV() {
+  try {
+    const estudiantes = await getEstudiantes().fetchEstudiantes();
+    const empresas = await getEmpresas().fetchEmpresas();
+
+    const data = [
+      { title: "Estudiantes", rows: estudiantes.rows },
+      { title: "Empresas", rows: empresas.rows },
+    ];
+
+    const csvContent = data
+      .map(
+        (section) =>
+          `${section.title}\n` +
+          section.rows.map((row) => Object.values(row).join(",")).join("\n")
+      )
+      .join("\n\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "datos.csv");
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } catch (error) {
+    console.error("Error al exportar CSV:", error);
+  }
+}
