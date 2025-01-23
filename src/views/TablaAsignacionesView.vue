@@ -22,18 +22,19 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <p v-if="error" class="text-red-500">{{ error }}</p>
-    <div v-else>
-      <!-- Renderizar encabezado de Asignaciones -->
-      <TablesThead :asignacion="true" />
-
-      <!-- Renderizar tabla de alumnos -->
-      <AllTable
-        v-for="asignacion in asignaciones"
-        :key="asignacion.id_asignacion"
-        :asignacion="asignacion"
-      />
+    <div>
+      <p v-if="error" class="text-red-500">{{ error }}</p>
+      <div v-else>
+        <!-- Renderizar encabezado de Asignaciones -->
+        <TablesThead :asignacion="true" />
+  
+        <!-- Renderizar tabla de asignaciones -->
+        <AllTable
+          v-for="asignacion in asignaciones"
+          :key="asignacion.id_asignacion"
+          :asignacion="asignacion"
+        />
+      </div>
     </div>
-  </div>
-</template>
+  </template>
+  

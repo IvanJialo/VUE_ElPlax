@@ -14,6 +14,15 @@ function toggleMenu() {
 function logout() {
   router.push('/');
 }
+function estudiantes() {
+  router.push('/estudiantes');
+}
+function empresas() {
+  router.push('/empresas');
+}
+function asignaciones() {
+  router.push('/asignaciones');
+}
 </script>
 
 <template>
@@ -57,7 +66,7 @@ function logout() {
 
                     <span
                       class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
-                      Teams
+                      Tablas
                     </span>
                   </a>
                 </li>
@@ -155,9 +164,10 @@ function logout() {
 
             <li>
               <details class="group [&_summary::-webkit-details-marker]:hidden">
+                
                 <summary
                   class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                  <span class="text-sm font-medium"> Teams </span>
+                  <span class="text-sm font-medium"> Tablas </span>
 
                   <span class="shrink-0 transition duration-300 group-open:-rotate-180">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
@@ -170,17 +180,23 @@ function logout() {
 
                 <ul class="mt-2 space-y-1 px-4">
                   <li>
-                    <a href="#"
+                    <button @click.prevent="estudiantes"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Banned Users
-                    </a>
+                      Estudiantes
+                    </button>
                   </li>
 
                   <li>
-                    <a href="#"
+                    <button @click.prevent="empresas"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Calendar
-                    </a>
+                      Empresas
+                    </button>
+                  </li>
+                  <li>
+                    <button @click.prevent="asignaciones"
+                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      Asignaciones
+                    </button>
                   </li>
                 </ul>
               </details>

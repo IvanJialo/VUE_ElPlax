@@ -5,6 +5,7 @@ import tablaDeEstudiantes from '../views/TablaAlumnosView.vue'
 import tablaDeEmpresas from '../views/TablaEmpresasView.vue'
 import editarAlumno from '../views/EditarAlumnoView.vue'
 import editarEmpresa from '../views/EditarEmpresaView.vue'
+import tablaAsignaciones from '../views/TablaAsignacionesView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/editarEmpresa',
       name: 'editarEmpresa',
       component: editarEmpresa,
+    },
+    {
+      path: '/asignaciones',
+      name: 'asignaciones',
+      component: tablaAsignaciones,
     },
   ],
 })

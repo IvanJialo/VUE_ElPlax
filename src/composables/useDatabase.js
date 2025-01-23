@@ -1,20 +1,22 @@
 // Ejemplo en un composable: src/composables/useDatabase.js
 import turso from "@/services/tursoClient";
 
-export function getEstudiantes() {
+function getEstudiantes() {
   const fetchEstudiantes = async () => {
-    try {
-      const result = await turso.execute('SELECT * FROM estudiantes'); // Ejecuta la consulta
-      console.log(result.rows); // Muestra los datos en la consola
-      return result;
-    } catch (error) {
-      console.error('Error al obtener estudiantes:', error); // Muestra errores en la consola
-    }
-  };
-  return { fetchEstudiantes };
+  try {
+    const result = await turso.execute('SELECT * FROM estudiantes'); // Ejecuta la consulta
+    return result;
+  } catch (error) {
+    console.error('Error al obtener estudiantes:', error); // Muestra errores en la consola
+    return { rows: [] };
+  }
+};
+return { fetchEstudiantes };
 }
 
-export function getEstudiantesID(id) {
+
+
+function getEstudiantesID(id) {
   const fetchEstudiantesID = async () => {
     try {
       const result = await turso.execute('SELECT * FROM estudiantes WHERE id_estudiante = ?', [id]); // Ejecuta la consulta
@@ -27,7 +29,7 @@ export function getEstudiantesID(id) {
   return { fetchEstudiantesID };
 }
 
-export function getEmpresasID(id) {
+function getEmpresasID(id) {
   const fetchEmpresasID = async () => {
     try {
       const result = await turso.execute('SELECT * FROM empresas WHERE id_empresa = ?', [id]); // Ejecuta la consulta
@@ -40,11 +42,10 @@ export function getEmpresasID(id) {
   return { fetchEmpresasID };
 }
 
-export function getProfesores() {
+function getProfesores() {
   const fetchProfesores = async () => {
     try {
       const result = await turso.execute('SELECT * FROM profesores'); // Ejecuta la consulta
-      console.log(result.rows); // Muestra los datos en la consola
       return result;
     } catch (error) {
       console.error('Error al obtener profesores:', error); // Muestra errores en la consola
@@ -53,11 +54,10 @@ export function getProfesores() {
   return { fetchProfesores };
 }
 
-export function getEmpresas() {
+function getEmpresas() {
   const fetchEmpresas = async () => {
     try {
       const result = await turso.execute('SELECT * FROM empresas'); // Ejecuta la consulta
-      console.log(result.rows); // Muestra los datos en la consola
       return result;
     } catch (error) {
       console.error('Error al obtener empresas:', error); // Muestra errores en la consola
@@ -66,11 +66,10 @@ export function getEmpresas() {
   return { fetchEmpresas };
 }
 
-export function getClases() {
+function getClases() {
   const fetchClases = async () => {
     try {
       const result = await turso.execute('SELECT * FROM clases'); // Ejecuta la consulta
-      console.log(result.rows); // Muestra los datos en la consola
       return result;
     } catch (error) {
       console.error('Error al obtener empresas:', error); // Muestra errores en la consola
@@ -79,7 +78,7 @@ export function getClases() {
   return { fetchClases };
 }
 
-export function getAsignaciones() {
+function getAsignaciones() {
   const fetchAsignaciones = async () => {
     try {
       const result = await turso.execute('SELECT * FROM asignaciones'); // Ejecuta la consulta
@@ -92,7 +91,7 @@ export function getAsignaciones() {
   return { fetchAsignaciones };
 }
 
-export async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
+async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
   try {
     const tieneVehiculo = vehiculo ? 1 : 0; // Convertimos el boolean a un valor 1 o 0
 
@@ -109,7 +108,7 @@ export async function postInsertarEstudiantes(dni, nombre, apellido, curso, fech
   }
 }
 
-export async function postInsertarEmpresas(cif, nombre, telefono, email, direccion, capacidad) {
+async function postInsertarEmpresas(cif, nombre, telefono, email, direccion, capacidad) {
   try {
     const query = `
         INSERT INTO empresas (CIF, nombre_empresa, telefono, email, direccion, capacidad) 
@@ -123,7 +122,7 @@ export async function postInsertarEmpresas(cif, nombre, telefono, email, direcci
   }
 }
 
-export async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignacion) {
+async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignacion) {
   try {
     const query = `
         INSERT INTO asignaciones (id_estudiante, id_empresa, fecha_asignacion) 
@@ -138,7 +137,7 @@ export async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_
   }
 }
 
-export async function deleteEstudianteId(id) {
+async function deleteEstudianteId(id) {
   try {
     const result = await turso.execute('DELETE FROM estudiantes WHERE id_estudiante = ?', [id]); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
@@ -147,7 +146,7 @@ export async function deleteEstudianteId(id) {
   }
 }
 
-export async function deleteEmpresaId(id) {
+async function deleteEmpresaId(id) {
   try {
     const result = await turso.execute('DELETE FROM empresas WHERE id_empresa = ?', [id]); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
@@ -156,7 +155,7 @@ export async function deleteEmpresaId(id) {
   }
 }
 
-export async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
+async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
   try {
     const tieneVehiculo = vehiculo ? 1 : 0; // Convertimos el boolean a un valor 1 o 0
 
@@ -174,7 +173,7 @@ export async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, d
   }
 }
 
-export async function putEmpresaId(id, cif, nombre, telefono, email, direccion, capacidad) {
+async function putEmpresaId(id, cif, nombre, telefono, email, direccion, capacidad) {
   try {
     const query = `
         UPDATE empresas 
@@ -190,7 +189,7 @@ export async function putEmpresaId(id, cif, nombre, telefono, email, direccion, 
   }
 }
 
-export async function exportCSV() {
+async function exportCSV() {
   try {
     const estudiantes = await getEstudiantes().fetchEstudiantes();
     const empresas = await getEmpresas().fetchEmpresas();
@@ -218,6 +217,24 @@ export async function exportCSV() {
     link.click();
     document.body.removeChild(link);
   } catch (error) {
-    console.error("Error al exportar CSV:", error);
+    console.error("Error al r CSV:", error);
   }
+}
+
+export {
+  getEstudiantes,
+  getEstudiantesID,
+  getEmpresasID,
+  getProfesores,
+  getEmpresas,
+  getClases,
+  getAsignaciones,
+  postInsertarEstudiantes,
+  postInsertarEmpresas,
+  postInsertarAsignaciones,
+  deleteEstudianteId,
+  deleteEmpresaId,
+  putEstudianteId,
+  putEmpresaId,
+  exportCSV
 }

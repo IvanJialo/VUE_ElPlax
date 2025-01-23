@@ -1,12 +1,27 @@
 <script setup>
 import { defineProps } from 'vue';
 import { ref, onMounted } from 'vue';
-import { deleteEstudianteId } from '../composables/useDatabase';
-import { deleteEmpresaId } from '../composables/useDatabase';
-import { getClases } from '../composables/useDatabase';
+import { deleteEstudianteId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas } from '../composables/useDatabase';
 
+// Definiendo las props
+const props = defineProps({
+  estudiante: {
+    type: Object,
+    required: false,
+  },
+  empresa: {
+    type: Object,
+    required: false,
+  },
+  asignacion: {
+    type: Object,
+    required: false,
+  },
+});
 
 const clases = ref([]);
+const nombreEstudiante = ref('Cargando...');
+const nombreEmpresa = ref('Cargando...');
 
 onMounted(async () => {
   const { fetchClases } = getClases();
@@ -14,24 +29,48 @@ onMounted(async () => {
   if (result) {
     clases.value = result.rows;
   }
+
+  // Cargar el nombre del estudiante si existe una asignación
+  if (props.asignacion?.id_estudiante) {
+    nombreEstudiante.value = await obtenerNombreEstudiante(props.asignacion.id_estudiante);
+  }
+
+  // Cargar el nombre de la empresa si existe una asignación
+  if (props.asignacion?.id_empresa) {
+    nombreEmpresa.value = await obtenerNombreEmpresa(props.asignacion.id_empresa);
+  }
 });
 
+function nombreDeClase(id) {
+  const clase = clases.value.find((clase) => clase.id_clase === id);
+  return clase ? clase.nombre_clase : 'No asignado';
+}
 
-// Recibiendo las props
-defineProps({
-  estudiante: {
-    type: Object,
-    required: false, // Opcional
-  },
-  empresa: {
-    type: Object,
-    required: false, // Opcional
-  },
-  asignacion: {
-    type: Object,
-    required: false, // Opcional
-  },
-});
+// Función para obtener el nombre del estudiante usando getEstudiantes
+async function obtenerNombreEstudiante(id) {
+  try {
+    const { fetchEstudiantes } = getEstudiantes();
+    const estudiantes = await fetchEstudiantes();
+    const estudiante = estudiantes.rows.find((est) => est.id_estudiante === id);
+    return estudiante ? `${estudiante.nombre} ${estudiante.apellido}` : 'Desconocido';
+  } catch (error) {
+    console.error('Error al obtener estudiantes:', error);
+    return 'Desconocido';
+  }
+}
+
+// Función para obtener el nombre de la empresa usando getEmpresas
+async function obtenerNombreEmpresa(id) {
+  try {
+    const { fetchEmpresas } = getEmpresas();
+    const empresas = await fetchEmpresas();
+    const empresa = empresas.rows.find((emp) => emp.id_empresa === id);
+    return empresa ? empresa.nombre_empresa : 'Desconocido';
+  } catch (error) {
+    console.error('Error al obtener empresas:', error);
+    return 'Desconocido';
+  }
+}
 
 function editarEstudiante(id) {
   localStorage.setItem('idEstudiante', id);
@@ -41,7 +80,7 @@ function editarEstudiante(id) {
 function eliminarEstudiante(id) {
   if (confirm('¿Estás seguro de eliminar este estudiante?')) {
     deleteEstudianteId(id);
-    this.rouer.push('/estudiantes');
+    this.router.push('/estudiantes');
   }
 }
 
@@ -51,33 +90,17 @@ function editarEmpresa(id) {
 }
 
 function eliminarEmpresa(id) {
-  if (confirm('¿Estás seguro de eliminar este empresa?')) {
+  if (confirm('¿Estás seguro de eliminar esta empresa?')) {
     deleteEmpresaId(id);
-    this.rouer.push('/empresas');
+    this.router.push('/empresas');
   }
 }
-
-function nombreDeClase(id) {
-  const clase = clases.value.find((clase) => clase.id_clase === id);
-  return clase ? clase.nombre_clase : 'No asignado';
-}
-
-const obtenerNombreEstudiante = (id) => {
-        const estudiante = estudiantes.find(est => est.id_estudiante === id);
-        return estudiante ? estudiante.nombre + ' ' + estudiante.apellido : 'Desconocido';
-    };
-
-    // Función para obtener el nombre de una empresa por su ID
-    const obtenerNombreEmpresa = (id) => {
-        const empresa = empresas.find(emp => emp.id_empresa === id);
-        return empresa ? empresa.nombre_empresa : 'Desconocido';
-    };
 </script>
 
 <template>
   <div class="overflow-x-auto rounded-lg border border-gray-200 my-4">
     <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-      <!-- Renderizar datos de estudiante si existe -->
+      <!-- Renderizar datos de asignación -->
       <tbody class="divide-y divide-gray-200" v-if="estudiante && !empresa && !asignacion">
         <tr>
           <td class="whitespace-nowrap px-4 py-2 text-gray-900">{{ estudiante.id_estudiante }}</td>
@@ -99,7 +122,6 @@ const obtenerNombreEstudiante = (id) => {
           <td class="whitespace-nowrap px-4 py-2 text-gray-700">
             <button @click="eliminarEstudiante(estudiante.id_estudiante)">🗑️</button>
           </td>
-          
         </tr>
       </tbody>
       <!-- Renderizar datos de empresa si existe -->
@@ -116,20 +138,24 @@ const obtenerNombreEstudiante = (id) => {
             <button @click="editarEmpresa(empresa.id_empresa)">📝</button>
           </td>
           <td class="whitespace-nowrap px-4 py-2 text-gray-700">
-            <button @click="eliminarEmpresa(empres.id_empresa)">🗑️</button>
+            <button @click="eliminarEmpresa(empresa.id_empresa)">🗑️</button>
           </td>
         </tr>
       </tbody>
       <tbody class="divide-y divide-gray-200" v-if="asignacion && !empresa && !estudiante">
         <tr>
           <td class="whitespace-nowrap px-4 py-2 text-gray-900">{{ asignacion.id_asignacion }}</td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ obtenerNombreEstudiante(asignacion.id_estudiante) }}</td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ obtenerNombreEmpresa(asignacion.id_empresa) }}</td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ asignacion.fecha }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+            {{ nombreEstudiante }}
+          </td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700">
+            {{ nombreEmpresa }}
+          </td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700">{{ asignacion.fecha_asignacion }}</td>
         </tr>
       </tbody>
       <!-- Mensaje en caso de no recibir datos válidos -->
-      <tfoot v-if="!estudiante && !empresa">
+      <tfoot v-if="!estudiante && !empresa && !asignacion">
         <tr>
           <td colspan="4" class="whitespace-nowrap px-4 py-2 text-center text-gray-500">
             No hay datos disponibles para mostrar.
