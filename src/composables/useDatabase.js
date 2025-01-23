@@ -92,7 +92,7 @@ export function getAsignaciones() {
   return { fetchAsignaciones };
 }
 
-async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
+export async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
   try {
     const tieneVehiculo = vehiculo ? 1 : 0; // Convertimos el boolean a un valor 1 o 0
 
@@ -109,7 +109,7 @@ async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, dire
   }
 }
 
-async function postInsertarEmpresas(cif, nombre, telefono, email, direccion, capacidad) {
+export async function postInsertarEmpresas(cif, nombre, telefono, email, direccion, capacidad) {
   try {
     const query = `
         INSERT INTO empresas (CIF, nombre_empresa, telefono, email, direccion, capacidad) 
@@ -123,7 +123,7 @@ async function postInsertarEmpresas(cif, nombre, telefono, email, direccion, cap
   }
 }
 
-async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignacion) {
+export async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignacion) {
   try {
     const query = `
         INSERT INTO asignaciones (id_estudiante, id_empresa, fecha_asignacion) 
@@ -138,7 +138,7 @@ async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignac
   }
 }
 
-async function deleteEstudianteId(id) {
+export async function deleteEstudianteId(id) {
   try {
     const result = await turso.execute('DELETE FROM estudiantes WHERE id_estudiante = ?', [id]); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
@@ -147,7 +147,7 @@ async function deleteEstudianteId(id) {
   }
 }
 
-async function deleteEmpresaId(id) {
+export async function deleteEmpresaId(id) {
   try {
     const result = await turso.execute('DELETE FROM empresas WHERE id_empresa = ?', [id]); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
@@ -156,7 +156,7 @@ async function deleteEmpresaId(id) {
   }
 }
 
-async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
+export async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
   try {
     const tieneVehiculo = vehiculo ? 1 : 0; // Convertimos el boolean a un valor 1 o 0
 
@@ -174,7 +174,7 @@ async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccio
   }
 }
 
-async function putEmpresaId(id, cif, nombre, telefono, email, direccion, capacidad) {
+export async function putEmpresaId(id, cif, nombre, telefono, email, direccion, capacidad) {
   try {
     const query = `
         UPDATE empresas 

@@ -2,18 +2,18 @@
 import { ref, onMounted } from "vue";
 import AllTable from "../components/AllTable.vue";
 import TablesThead from "../components/TablesThead.vue";
-import { getEstudiantes } from "../composables/useDatabase";
+import { getEmpresas } from "../composables/useDatabase";
 
 // Estados reactivos
-const estudiantes = ref([]);
+const empresas = ref([]);
 const error = ref(null);
 
-// Cargar estudiantes al montar el componente
+// Cargar empresas al montar el componente
 onMounted(async () => {
   try {
-    const { fetchEstudiantes } = getEstudiantes();
-    const data = await fetchEstudiantes();
-    estudiantes.value = data.rows || [];
+    const { fetchEmpresas } = getEmpresas();
+    const data = await fetchEmpresas();
+    empresas.value = data.rows || [];
   } catch (err) {
     error.value = "Hubo un error al cargar los datos.";
     console.error(err);
@@ -25,14 +25,14 @@ onMounted(async () => {
   <div>
     <p v-if="error" class="text-red-500">{{ error }}</p>
     <div v-else>
-      <!-- Renderizar encabezado de estudiantes -->
-      <TablesThead :estudiante="true" />
+      <!-- Renderizar encabezado de empresas -->
+      <TablesThead :empresa="true" />
 
       <!-- Renderizar tabla de alumnos -->
       <AllTable
-        v-for="estudiante in estudiantes"
-        :key="estudiante.id_estudiante"
-        :estudiante="estudiante"
+        v-for="empresa in empresas"
+        :key="empresa.id_empresa"
+        :empresa="empresa"
       />
     </div>
   </div>
