@@ -34,22 +34,22 @@ onMounted(async () => {
         </div>
 
         <dl class="mt-6 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">
-            <div class="flex flex-col rounded-lg bg-blue-50 px-4 py-8 text-center">
+            <div class="flex flex-col rounded-lg bg-[#DCD0FF]/40 px-4 py-8 text-center">
                 <dt class="order-last text-lg font-medium text-gray-500">Total Alumnos</dt>
 
-                <dd class="text-4xl font-extrabold text-blue-600 md:text-5xl">{{ estudiantes }}</dd>
+                <dd class="text-4xl font-extrabold text-[#b197ff] md:text-5xl">{{ estudiantes }}</dd>
             </div>
 
-            <div class="flex flex-col rounded-lg bg-blue-50 px-4 py-8 text-center">
+            <div class="flex flex-col rounded-lg bg-[#DCD0FF]/40 px-4 py-8 text-center">
                 <dt class="order-last text-lg font-medium text-gray-500">Total Empresas</dt>
 
-                <dd class="text-4xl font-extrabold text-blue-600 md:text-5xl">{{ empresas }}</dd>
+                <dd class="text-4xl font-extrabold text-[#b197ff] md:text-5xl">{{ empresas }}</dd>
             </div>
 
-            <div class="flex flex-col rounded-lg bg-blue-50 px-4 py-8 text-center">
+            <div class="flex flex-col rounded-lg bg-[#DCD0FF]/40 px-4 py-8 text-center">
                 <dt class="order-last text-lg font-medium text-gray-500">Total Asignaciones</dt>
 
-                <dd class="text-4xl font-extrabold text-blue-600 md:text-5xl">{{ asignaciones }}</dd>
+                <dd class="text-4xl font-extrabold text-[#b197ff] md:text-5xl">{{ asignaciones }}</dd>
             </div>
         </dl>
     </div>
