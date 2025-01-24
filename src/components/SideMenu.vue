@@ -164,7 +164,7 @@ function asignaciones() {
 
             <li>
               <details class="group [&_summary::-webkit-details-marker]:hidden">
-                
+
                 <summary
                   class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                   <span class="text-sm font-medium"> Tablas </span>
@@ -246,8 +246,8 @@ function asignaciones() {
                     </a>
                   </li>
                   <li>
-                    <button class="w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
-                      >
+                    <button
+                      class="w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
                       Logout
                     </button>
                   </li>
