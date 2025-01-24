@@ -14,7 +14,7 @@ const shouldShowSideMenu = computed(() => {
 <template>
   <div :class="['PageDivision', { 'no-side-menu': !shouldShowSideMenu }]">
     <!-- SideMenu -->
-    <SideMenu v-if="shouldShowSideMenu" />
+    <SideMenu v-if="shouldShowSideMenu" class="fixed" />
 
     <!-- Main Content -->
     <div class="Content">
@@ -26,8 +26,9 @@ const shouldShowSideMenu = computed(() => {
 <style>
 .PageDivision {
   display: grid;
-  grid-template-columns: 300px 1fr; /* SideMenu ahora ocupa 300px */
+  place-content: center;
   height: 100vh;
+  width: 100vw;
 }
 
 .PageDivision.no-side-menu {

@@ -165,7 +165,7 @@ function asignaciones() {
       </div>
 
       <div id="desplegable" class="flex h-screen flex-1 flex-col justify-between border-e bg-white"
-        :class="isMenuOpen ? 'opacity-100 animate-fade-in-right sm:max-w-[20vw] max-w-[100vw]' : 'opacity-0 hidden transparent'">
+        :class="isMenuOpen ? 'opacity-100 animate-fade-in-right sm:max-w-[20vw] max-w-[100vw]' : 'opacity-0 hidden'">
         <div class="px-4 py-6">
           <ul class="mt-14 space-y-1">
             <li>

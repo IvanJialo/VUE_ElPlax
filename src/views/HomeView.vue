@@ -5,7 +5,7 @@ import Dashboard from '@/components/Dashboard.vue';
 </script>
 
 <template>
-    <div class="flex justify-center -ml-64 mt-28">
+    <div class="w-full mb-24">
         <Dashboard />
     </div>
 </template>
