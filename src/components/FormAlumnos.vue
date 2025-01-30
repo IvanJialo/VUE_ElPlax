@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <section class=" py-8  flex items-center">
+    <section class="max-h-screen flex items-center">
         <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <h2 class="text-center font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#DCD0FF] via-purple-500 to-[#b197ff] sm:text-3xl mb-6">
                 Creación de Alumnos
@@ -11,7 +11,7 @@
 
             <div class="mx-auto max-w-lg">
 
-                <form action="#" class="mb-0 space-y-4 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-white">
+                <form action="#" class="mb-0 mt-6 rounded-lg p-4 shadow-lg sm:p-6 lg:p-8 bg-white">
                     <!-- Campos obligatorios -->
                     <div class="space-y-4">
                         <div>
@@ -49,7 +49,7 @@
                     </div>
 
                     <!-- Sección de datos opcionales -->
-                    <div class="pt-6 border-t border-gray-200">
+                    <div class="pt-2 mt-6 border-t border-gray-200">
                         <h3 class="text-center text-lg font-medium text-gray-700 mb-4">Datos Opcionales</h3>
                         
                         <div class="space-y-4">
