@@ -19,42 +19,47 @@ defineProps({
 </script>
 
 <template>
-  <div class="overflow-x-auto rounded-lg border border-gray-200 my-4">
-    <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-      <!-- Condicional para mostrar el thead correcto -->
-      <thead v-if="estudiante && !empresa && !asignacion">
+  <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
+    <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
+      <!-- Cabecera para Estudiantes -->
+      <thead class="bg-gray-100" v-if="estudiante && !empresa && !asignacion">
         <tr>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">ID</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">DNI</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Nombre</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Apellido</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Curso</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Fecha nacimiento</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Dirección</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Email</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Teléfono</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Vehículo</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Modificar</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">DNI</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Nombre</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Apellido</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Curso</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Nacimiento</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Dirección</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Email</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Teléfono</th>
+          <th class="px-4 py-3 text-center font-semibold text-gray-700">Vehículo</th>
+          <th class="px-4 py-3 text-center font-semibold text-gray-700">Acciones</th>
         </tr>
       </thead>
-      <thead v-if="empresa && !estudiante && !asignacion">
+
+      <!-- Cabecera para Empresas -->
+      <thead class="bg-gray-100" v-if="empresa && !estudiante && !asignacion">
         <tr>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">ID</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">CIF</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Nombre</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Teléfono</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Email</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Dirección</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Capacidad</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Modificar</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">CIF</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Nombre</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Teléfono</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Email</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Dirección</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Capacidad</th>
+          <th class="px-4 py-3 text-center font-semibold text-gray-700">Acciones</th>
         </tr>
       </thead>
-      <thead v-if="asignacion && !empresa && !estudiante">
+
+      <!-- Cabecera para Asignaciones -->
+      <thead class="bg-gray-100" v-if="asignacion && !empresa && !estudiante">
         <tr>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">ID</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Estudiante</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Empresa</th>
-          <th class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">Fecha</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Estudiante</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Empresa</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Inicio</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Fin</th>
         </tr>
       </thead>
     </table>
