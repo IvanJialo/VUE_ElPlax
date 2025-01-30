@@ -6,6 +6,10 @@ import tablaDeEmpresas from '../views/TablaEmpresasView.vue'
 import editarAlumno from '../views/EditarAlumnoView.vue'
 import editarEmpresa from '../views/EditarEmpresaView.vue'
 import tablaAsignaciones from '../views/TablaAsignacionesView.vue'
+import crearAlumno from '../views/CrearAlumnoView.vue'
+import crearEmpresa from '../views/CrearEmpresaView.vue'
+import crearAsignacion from '../views/CrearAsignacionView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +48,21 @@ const router = createRouter({
       path: '/asignaciones',
       name: 'asignaciones',
       component: tablaAsignaciones,
+    },
+    {
+      path: '/crearAlumno',
+      name: 'crearAlumno',
+      component: crearAlumno,
+    },
+    {
+      path: '/crearEmpresa',
+      name: 'crearEmpresa',
+      component: crearEmpresa,
+    },
+    {
+      path: '/crearAsignacion',
+      name: 'crearAsignacion',
+      component: crearAsignacion,
     },
   ],
 })
