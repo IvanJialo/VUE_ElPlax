@@ -21,7 +21,7 @@
                                 type="text"
                                 required
                                 class="w-full rounded-lg border-gray-200 focus:border-purple-500 p-3 text-sm shadow-sm"
-                                placeholder="Nombre completo"
+                                placeholder="Nombre"
                             />
                         </div>
 
@@ -102,7 +102,7 @@
                                     id="direccion"
                                     type="text"
                                     class="w-full rounded-lg border-gray-200 focus:border-purple-500 p-3 text-sm shadow-sm"
-                                    placeholder="Dirección completa"
+                                    placeholder="Dirección"
                                 />
                             </div>
 
