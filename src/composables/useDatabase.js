@@ -108,13 +108,13 @@ async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, dire
   }
 }
 
-async function postInsertarEmpresas(cif, nombre, telefono, email, direccion, capacidad) {
+async function postInsertarEmpresas(cif, nombre, telefono, email, direccion, capacidad, observacion) {
   try {
     const query = `
-        INSERT INTO empresas (CIF, nombre_empresa, telefono, email, direccion, capacidad) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO empresas (CIF, nombre_empresa, telefono, email, direccion, capacidad, observacion) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         `;
-    const values = [cif, nombre, telefono, email, direccion, capacidad];
+    const values = [cif, nombre, telefono, email, direccion, capacidad, observacion];
     const result = await turso.execute(query, values); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
   } catch (error) {
@@ -122,13 +122,13 @@ async function postInsertarEmpresas(cif, nombre, telefono, email, direccion, cap
   }
 }
 
-async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignacion) {
+async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignacion, fecha_finalizacion) {
   try {
     const query = `
-        INSERT INTO asignaciones (id_estudiante, id_empresa, fecha_asignacion) 
-        VALUES (?, ?, ?)
+        INSERT INTO asignaciones (id_estudiante, id_empresa, fecha_asignacion, fecha_finalizacion) 
+        VALUES (?, ?, ?, ?)
         `;
-    const values = [id_estudiante, id_empresa, fecha_asignacion];
+    const values = [id_estudiante, id_empresa, fecha_asignacion, fecha_finalizacion];
 
     const result = await turso.execute(query, values); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
