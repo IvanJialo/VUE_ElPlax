@@ -14,8 +14,6 @@ function getEstudiantes() {
 return { fetchEstudiantes };
 }
 
-
-
 function getEstudiantesID(id) {
   const fetchEstudiantesID = async () => {
     try {
@@ -173,14 +171,14 @@ async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccio
   }
 }
 
-async function putEmpresaId(id, cif, nombre, telefono, email, direccion, capacidad) {
+async function putEmpresaId(id, cif, nombre, telefono, email, direccion, capacidad, observacion) {
   try {
     const query = `
         UPDATE empresas 
-        SET CIF = ?, nombre_empresa = ?, telefono = ?, email = ?, direccion = ?, capacidad = ? 
+        SET CIF = ?, nombre_empresa = ?, telefono = ?, email = ?, direccion = ?, capacidad = ?, observacion = ? 
         WHERE id_empresa = ?
         `;
-    const values = [cif, nombre, telefono, email, direccion, capacidad, id];
+    const values = [cif, nombre, telefono, email, direccion, capacidad, observacion, id];
 
     const result = await turso.execute(query, values); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola

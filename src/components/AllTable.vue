@@ -1,8 +1,10 @@
 <script setup>
 import { defineProps } from 'vue';
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { deleteEstudianteId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas } from '../composables/useDatabase';
 
+const router = useRouter();
 // Definiendo las props
 const props = defineProps({
   estudiante: {
@@ -74,25 +76,25 @@ async function obtenerNombreEmpresa(id) {
 
 function editarEstudiante(id) {
   localStorage.setItem('idEstudiante', id);
-  this.router.push('/editarAlumno');
+  router.push('/editarAlumno');
 }
 
 function eliminarEstudiante(id) {
   if (confirm('¿Estás seguro de eliminar este estudiante?')) {
     deleteEstudianteId(id);
-    this.router.push('/estudiantes');
+    router.push('/estudiantes');
   }
 }
 
 function editarEmpresa(id) {
   localStorage.setItem('idEmpresa', id);
-  this.router.push('/editarEmpresa');
+  router.push('/editarEmpresa');
 }
 
 function eliminarEmpresa(id) {
   if (confirm('¿Estás seguro de eliminar esta empresa?')) {
     deleteEmpresaId(id);
-    this.router.push('/empresas');
+    router.push('/empresas');
   }
 }
 </script>
