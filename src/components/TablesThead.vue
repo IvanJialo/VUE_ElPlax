@@ -19,8 +19,8 @@ defineProps({
 </script>
 
 <template>
-  <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
-    <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
+  <!-- <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4"> -->
+    <!-- <table class="min-w-full divide-y divide-gray-300 bg-white text-sm"> -->
       <!-- Cabecera para Estudiantes -->
       <thead class="bg-gray-100" v-if="estudiante && !empresa && !asignacion">
         <tr>
@@ -62,6 +62,6 @@ defineProps({
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Fin</th>
         </tr>
       </thead>
-    </table>
-  </div>
+    <!-- </table> -->
+  <!-- </div> -->
 </template>

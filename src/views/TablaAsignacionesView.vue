@@ -25,15 +25,19 @@ onMounted(async () => {
     <div>
       <p v-if="error" class="text-red-500">{{ error }}</p>
       <div v-else>
-        <!-- Renderizar encabezado de Asignaciones -->
-        <TablesThead :asignacion="true" />
-  
-        <!-- Renderizar tabla de asignaciones -->
-        <AllTable
-          v-for="asignacion in asignaciones"
-          :key="asignacion.id_asignacion"
-          :asignacion="asignacion"
-        />
+        <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
+          <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
+            <!-- Renderizar encabezado de Asignaciones -->
+            <TablesThead :asignacion="true" />
+      
+            <!-- Renderizar tabla de asignaciones -->
+            <AllTable
+              v-for="asignacion in asignaciones"
+              :key="asignacion.id_asignacion"
+              :asignacion="asignacion"
+            />
+          </table>
+        </div>
       </div>
     </div>
   </template>

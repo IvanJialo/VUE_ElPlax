@@ -98,8 +98,8 @@ function eliminarEmpresa(id) {
 </script>
 
 <template>
-  <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
-    <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
+  <!-- <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
+    <table class="min-w-full divide-y divide-gray-300 bg-white text-sm"> -->
       <!-- Cuerpo para Estudiantes -->
       <tbody class="divide-y divide-gray-200" v-if="estudiante && !empresa && !asignacion">
         <tr class="hover:bg-gray-50 transition-colors">
@@ -192,6 +192,6 @@ function eliminarEmpresa(id) {
           </td>
         </tr>
       </tbody>
-    </table>
-  </div>
+    <!-- </table>
+  </div> -->
 </template>

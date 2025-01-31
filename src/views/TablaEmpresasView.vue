@@ -25,15 +25,19 @@ onMounted(async () => {
   <div>
     <p v-if="error" class="text-red-500">{{ error }}</p>
     <div v-else>
-      <!-- Renderizar encabezado de empresas -->
-      <TablesThead :empresa="true" />
+      <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
+        <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
+          <!-- Renderizar encabezado de empresas -->
+          <TablesThead :empresa="true" />
 
-      <!-- Renderizar tabla de alumnos -->
-      <AllTable
-        v-for="empresa in empresas"
-        :key="empresa.id_empresa"
-        :empresa="empresa"
-      />
+          <!-- Renderizar tabla de alumnos -->
+          <AllTable
+            v-for="empresa in empresas"
+            :key="empresa.id_empresa"
+            :empresa="empresa"
+          />
+        </table>
+      </div>
     </div>
   </div>
 </template>
