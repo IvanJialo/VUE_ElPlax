@@ -2,6 +2,11 @@
 import { ref } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import ExportData from '../components/ExportData.vue';
+import { exportCSV } from "@/composables/useDatabase";
+  
+  const exportarCSV = () => {
+    exportCSV(); // Llama a la función para exportar datos
+  };
 
 const router = useRouter();
 
@@ -18,7 +23,6 @@ function toggleMenu() {
       document.getElementById('desplegable').classList.add('hidden');
     }, 300);
   }
-
 }
 
 function logout() {
@@ -33,6 +37,16 @@ function empresas() {
 function asignaciones() {
   router.push('/asignaciones');
 }
+function crearEstudiantes() {
+  router.push('/crearAlumno');
+}
+function crearEmpresas() {
+  router.push('/crearEmpresa');
+}
+function crearAsignaciones() {
+  router.push('/crearAsignacion');
+}
+
 </script>
 
 <template>
@@ -176,10 +190,9 @@ function asignaciones() {
 
             <li>
               <details class="group [&_summary::-webkit-details-marker]:hidden">
-
                 <summary
                   class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                  <span class="text-sm font-medium"> Tablas </span>
+                  <span class="text-sm font-medium"> Estudiantes </span>
 
                   <span class="shrink-0 transition duration-300 group-open:-rotate-180">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
@@ -192,22 +205,16 @@ function asignaciones() {
 
                 <ul class="mt-2 space-y-1 px-4">
                   <li>
-                    <button @click.prevent="estudiantes"
+                    <button @click.prevent="crearEstudiantes"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Estudiantes
+                      Crear Estudiante
                     </button>
                   </li>
 
                   <li>
-                    <button @click.prevent="empresas"
+                    <button @click.prevent="estudiantes"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Empresas
-                    </button>
-                  </li>
-                  <li>
-                    <button @click.prevent="asignaciones"
-                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Asignaciones
+                      Información
                     </button>
                   </li>
                 </ul>
@@ -215,24 +222,10 @@ function asignaciones() {
             </li>
 
             <li>
-              <a href="#"
-                class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                Billing
-              </a>
-            </li>
-
-            <li>
-              <a href="#"
-                class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                Invoices
-              </a>
-            </li>
-
-            <li>
               <details class="group [&_summary::-webkit-details-marker]:hidden">
                 <summary
                   class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                  <span class="text-sm font-medium"> Account </span>
+                  <span class="text-sm font-medium"> Empresas </span>
 
                   <span class="shrink-0 transition duration-300 group-open:-rotate-180">
                     <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
@@ -245,22 +238,82 @@ function asignaciones() {
 
                 <ul class="mt-2 space-y-1 px-4">
                   <li>
-                    <a href="#"
+                    <button @click.prevent="crearEmpresas"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Details
-                    </a>
+                      Crear Empresas
+                    </button>
                   </li>
 
                   <li>
-                    <a href="#"
+                    <button @click.prevent="empresas"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Security
-                    </a>
+                      Información
+                    </button>
                   </li>
+                </ul>
+              </details>
+            </li>
+
+            <li>
+              <details class="group [&_summary::-webkit-details-marker]:hidden">
+                <summary
+                  class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                  <span class="text-sm font-medium"> Asignaciones </span>
+
+                  <span class="shrink-0 transition duration-300 group-open:-rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </summary>
+
+                <ul class="mt-2 space-y-1 px-4">
                   <li>
-                    <button
-                      class="w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
-                      Logout
+                    <button @click.prevent="crearAsignaciones"
+                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      Crear Asignaciones
+                    </button>
+                  </li>
+
+                  <li>
+                    <button @click.prevent="asignaciones"
+                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      Información
+                    </button>
+                  </li>
+                </ul>
+              </details>
+            </li>
+
+            <li>
+              <details class="group [&_summary::-webkit-details-marker]:hidden">
+                <summary
+                  class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                  <span class="text-sm font-medium"> Exportar </span>
+
+                  <span class="shrink-0 transition duration-300 group-open:-rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </summary>
+
+                <ul class="mt-2 space-y-1 px-4">
+                  <li>
+                    <button @click.prevent="exportarCSV"
+                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      Exportar CSV
+                    </button>
+                  </li>
+
+                  <li>
+                    <button @click.prevent="asignaciones"
+                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      Exportar PDF
                     </button>
                   </li>
                 </ul>
