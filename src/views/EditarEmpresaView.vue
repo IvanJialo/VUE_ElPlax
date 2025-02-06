@@ -87,7 +87,7 @@ const guardarEmpresa = async () => {
               <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label for="cif" class="block text-sm font-medium text-gray-700">CIF</label>
-                  <input v-model="form.cif" id="cif" type="text" :disabled="esEdicion" class="w-full rounded-lg border-gray-200 focus:border-purple-500 focus:ring-purple-500 p-3 text-sm shadow-sm bg-gray-100" placeholder="Código de identificación fiscal" />
+                  <input v-model="form.cif" id="cif" type="text" class="w-full rounded-lg border-gray-200 focus:border-purple-500 focus:ring-purple-500 p-3 text-sm shadow-sm" placeholder="Código de identificación fiscal" />
                 </div>
 
                 <div>
