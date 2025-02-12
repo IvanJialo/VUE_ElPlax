@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, defineProps } from 'vue';
 import { useRouter } from 'vue-router';
-import { deleteEstudianteId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas } from '../composables/useDatabase';
+import { deleteEstudianteId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas, getRegistros, getProfesores } from '../composables/useDatabase';
 
 const router = useRouter();
 // Definiendo las props
@@ -18,11 +18,17 @@ const props = defineProps({
     type: Object,
     required: false,
   },
+  registro: {
+    type: Object,
+    required: false,
+  },
 });
 
 const clases = ref([]);
+const registros = ref([]);
 const nombreEstudiante = ref('Cargando...');
 const nombreEmpresa = ref('Cargando...');
+const nombreProfesor = ref('Cargando...');
 
 onMounted(async () => {
   const { fetchClases } = getClases();
@@ -40,6 +46,23 @@ onMounted(async () => {
   if (props.asignacion?.id_empresa) {
     nombreEmpresa.value = await obtenerNombreEmpresa(props.asignacion.id_empresa);
   }
+
+  const { fetchRegistros } = getRegistros();
+  const result2 = await fetchRegistros();
+  if (result2) {
+    registros.value = result2.rows;
+  }
+
+  // Cargar el nombre del profesor si existe un registro
+  if (props.registro?.id_profesor) {
+    nombreProfesor.value = await obtenerNombreProfesor(props.registro.id_profesor);
+  }
+
+  // Cargar el nombre de la empresa si existe un registro
+  if (props.registro?.id_empresa) {
+    nombreEmpresa.value = await obtenerNombreEmpresa(props.registro.id_empresa);
+  }
+
 });
 
 function nombreDeClase(id) {
@@ -73,6 +96,19 @@ async function obtenerNombreEmpresa(id) {
   }
 }
 
+// Función para obtener el nombre del profesor usando getProfesores
+async function obtenerNombreProfesor(id) {
+  try {
+    const { fetchProfesores } = getProfesores();
+    const profesores = await fetchProfesores();
+    const profesor = profesores.rows.find((prof) => prof.id_profesor === id);
+    return profesor ? `${profesor.nombre} ${profesor.apellido}` : 'Desconocido';
+  } catch (error) {
+    console.error('Error al obtener profesores:', error);
+    return 'Desconocido';
+  }
+}
+
 function editarEstudiante(id) {
   localStorage.setItem('idEstudiante', id);
   router.push('/editarAlumno');
@@ -90,6 +126,11 @@ function editarEmpresa(id) {
   router.push('/editarEmpresa');
 }
 
+function crearRegistro(id) {
+  localStorage.setItem('idEmpresa', id);
+  router.push('/crearRegistro');
+}
+
 function eliminarEmpresa(id) {
   if (confirm('¿Estás seguro de eliminar esta empresa?')) {
     deleteEmpresaId(id);
@@ -102,7 +143,7 @@ function eliminarEmpresa(id) {
   <!-- <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
     <table class="min-w-full divide-y divide-gray-300 bg-white text-sm"> -->
       <!-- Cuerpo para Estudiantes -->
-      <tbody class="divide-y divide-gray-200" v-if="estudiante && !empresa && !asignacion">
+      <tbody class="divide-y divide-gray-200" v-if="estudiante && !empresa && !asignacion && !registro">
         <tr class="hover:bg-gray-50 transition-colors">
           <td class="px-4 py-3 text-gray-900 font-medium">{{ estudiante.id_estudiante }}</td>
           <td class="px-4 py-3 text-gray-700">{{ estudiante.dni }}</td>
@@ -139,7 +180,7 @@ function eliminarEmpresa(id) {
       </tbody>
 
       <!-- Cuerpo para Empresas -->
-      <tbody class="divide-y divide-gray-200" v-if="empresa && !estudiante && !asignacion">
+      <tbody class="divide-y divide-gray-200" v-if="empresa && !estudiante && !asignacion && !registro">
         <tr class="hover:bg-gray-50 transition-colors">
           <td class="px-4 py-3 text-gray-900 font-medium">{{ empresa.id_empresa }}</td>
           <td class="px-4 py-3 text-gray-700">{{ empresa.CIF }}</td>
@@ -165,12 +206,20 @@ function eliminarEmpresa(id) {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
               </svg>
             </button>
+            <button 
+              @click="crearRegistro(empresa.id_empresa)"
+              class="p-2 text-green-600 hover:bg-red-50 rounded-lg transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4v16a2 2 0 002 2h10a2 2 0 002-2V4m-2 0a2 2 0 00-2-2H7a2 2 0 00-2 2m3 4h8m-8 4h8m-8 4h5"/>
+              </svg>
+            </button>
           </td>
         </tr>
       </tbody>
 
       <!-- Cuerpo para Asignaciones -->
-      <tbody class="divide-y divide-gray-200" v-if="asignacion && !empresa && !estudiante">
+      <tbody class="divide-y divide-gray-200" v-if="asignacion && !empresa && !estudiante && !registro">
         <tr class="hover:bg-gray-50 transition-colors">
           <td class="px-4 py-3 text-gray-900 font-medium">{{ asignacion.id_asignacion }}</td>
           <td class="px-4 py-3 text-gray-700">{{ nombreEstudiante }}</td>
@@ -180,19 +229,21 @@ function eliminarEmpresa(id) {
         </tr>
       </tbody>
 
-      <!-- Mensaje sin datos -->
-      <tbody v-if="!estudiante && !empresa && !asignacion">
-        <tr>
-          <td colspan="12" class="px-4 py-6 text-center text-gray-500">
-            <div class="inline-flex items-center gap-2">
-              <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              <span class="font-medium">No hay datos disponibles</span>
-            </div>
-          </td>
+      <!-- Cuerpo para Registros -->
+      <tbody class="divide-y divide-gray-200" v-if="registro && !empresa && !estudiante && !asignacion">
+        <tr class="hover:bg-gray-50 transition-colors">
+          <td class="px-4 py-3 text-gray-900 font-medium">{{ registro.id_registros }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ nombreProfesor }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ nombreEmpresa }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ registro.fecha_asignacion }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ registro.llamada_registrada }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ registro.correo_registrado }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ registro.reunion_registrada }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ registro.observacion }}</td>
         </tr>
       </tbody>
+
+      
     <!-- </table>
   </div> -->
 </template>

@@ -1,25 +1,29 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import { getEstudiantes, getEmpresas, getAsignaciones } from '@/composables/useDatabase';
+import { getEstudiantes, getEmpresas, getAsignaciones, getRegistros } from '@/composables/useDatabase';
 
 const { fetchEstudiantes } = getEstudiantes();
 const { fetchEmpresas } = getEmpresas();
 const { fetchAsignaciones } = getAsignaciones();
+const { fetchRegistros } = getRegistros();
 
 const estudiantes = ref(0);
 const empresas = ref(0);
 const asignaciones = ref(0);
+const registros = ref(0);
 
 onMounted(async () => {
-  const [estudiantesRes, empresasRes, asignacionesRes] = await Promise.all([
+  const [estudiantesRes, empresasRes, asignacionesRes, registrosRes] = await Promise.all([
     fetchEstudiantes(),
     fetchEmpresas(),
     fetchAsignaciones(),
+    fetchRegistros(),
   ]);
 
   estudiantes.value = estudiantesRes.rows.length;
   empresas.value = empresasRes.rows.length;
   asignaciones.value = asignacionesRes.rows.length;
+  registros.value = registrosRes.rows.length;
 });
 
 </script>
@@ -33,7 +37,7 @@ onMounted(async () => {
             </p>
         </div>
 
-        <dl class="mt-6 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">
+        <dl class="mt-6 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-2 lg:grid-cols-4">
             <div class="flex flex-col rounded-lg bg-[#DCD0FF]/40 px-4 py-8 text-center">
                 <dt class="order-last text-lg font-medium text-gray-500">Total Alumnos</dt>
 
@@ -50,6 +54,11 @@ onMounted(async () => {
                 <dt class="order-last text-lg font-medium text-gray-500">Total Asignaciones</dt>
 
                 <dd class="text-4xl font-extrabold text-[#b197ff] md:text-5xl">{{ asignaciones }}</dd>
+            </div>
+            <div class="flex flex-col rounded-lg bg-[#DCD0FF]/40 px-4 py-8 text-center">
+                <dt class="order-last text-lg font-medium text-gray-500">Total Registros</dt>
+
+                <dd class="text-4xl font-extrabold text-[#b197ff] md:text-5xl">{{ registros }}</dd>
             </div>
         </dl>
     </div>

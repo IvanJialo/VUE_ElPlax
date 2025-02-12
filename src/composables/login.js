@@ -41,6 +41,7 @@ export async function login(userName, userPwd) {
         // Comprobar si el nombre de usuario y la contraseña coinciden
         if (profesor.nombre === userName && profesor.contrasena === userPwd) {
             isValidUser = true;
+            localStorage.setItem('idProfesor', profesor.id_profesor);
             break;
         }
     }

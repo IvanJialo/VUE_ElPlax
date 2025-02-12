@@ -219,6 +219,40 @@ async function exportCSV() {
   }
 }
 
+function getRegistros() {
+  const fetchRegistros = async () => {
+    try {
+      const result = await turso.execute('SELECT * FROM registros'); // Ejecuta la consulta para obtener todos los registros
+      return result;
+    } catch (error) {
+      console.error('Error al obtener registros:', error); // Muestra errores en la consola
+      return { rows: [] };
+    }
+  };
+  return { fetchRegistros };
+}
+
+async function postInsertarRegistros(llamada_registrada, correo_registrado, reunion_registrada, observacion, fecha_asignacion, id_empresa, id_profesor) {
+  try {
+    // Convertir los booleanos a 1 o 0
+    const llamada = llamada_registrada ? 1 : 0;
+    const correo = correo_registrado ? 1 : 0;
+    const reunion = reunion_registrada ? 1 : 0;
+    
+    const query = `
+      INSERT INTO registros (llamada_registrada, correo_registrado, reunion_registrada, observacion, fecha_asignacion, id_empresa, id_profesor)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    const values = [llamada, correo, reunion, observacion, fecha_asignacion, id_empresa, id_profesor];
+
+    const result = await turso.execute(query, values); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+    return result;
+  } catch (error) {
+    console.error('Error al insertar registro:', error); // Muestra errores en la consola
+  }
+}
+
 export {
   getEstudiantes,
   getEstudiantesID,
@@ -234,5 +268,7 @@ export {
   deleteEmpresaId,
   putEstudianteId,
   putEmpresaId,
-  exportCSV
+  exportCSV,
+  getRegistros,
+  postInsertarRegistros
 }

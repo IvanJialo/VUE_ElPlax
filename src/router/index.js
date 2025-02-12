@@ -9,6 +9,8 @@ import tablaAsignaciones from '../views/TablaAsignacionesView.vue'
 import crearAlumno from '../views/CrearAlumnoView.vue'
 import crearEmpresa from '../views/CrearEmpresaView.vue'
 import crearAsignacion from '../views/CrearAsignacionView.vue'
+import crearRegistro from '../views/CrearRegistroView.vue'
+import tablaDeRegistros from '../views/TablaRegistrosView.vue'
 
 
 const router = createRouter({
@@ -63,6 +65,16 @@ const router = createRouter({
       path: '/crearAsignacion',
       name: 'crearAsignacion',
       component: crearAsignacion,
+    },
+    {
+      path: '/crearRegistro',
+      name: 'crearRegistro',
+      component: crearRegistro,
+    },
+    {
+      path: '/registros',
+      name: 'registros',
+      component: tablaDeRegistros,
     },
   ],
 })

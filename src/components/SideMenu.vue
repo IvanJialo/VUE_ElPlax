@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import ExportData from '../components/ExportData.vue';
 import { exportCSV } from "@/composables/useDatabase";
+import Swal from 'sweetalert2';
+
   
   const exportarCSV = () => {
     exportCSV(); // Llama a la función para exportar datos
@@ -45,6 +47,25 @@ function crearEmpresas() {
 }
 function crearAsignaciones() {
   router.push('/crearAsignacion');
+}
+function CrearRegistros() {
+  Swal.fire({
+    title: 'Atención',
+    html: `
+      <p>Para crear un registro respecto a una empresa, tiene que seleccionar este botón:</p>
+      <button class="p-2 text-green-600 hover:bg-red-50 rounded-lg transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 4v16a2 2 0 002 2h10a2 2 0 002-2V4m-2 0a2 2 0 00-2-2H7a2 2 0 00-2 2m3 4h8m-8 4h8m-8 4h5"/>
+        </svg>
+      </button>
+    `,
+    confirmButtonText: 'Aceptar'
+  }).then(() => {
+    router.push('/empresas');
+  });
+}
+function registros() {
+  router.push('/registros');
 }
 
 </script>
@@ -279,6 +300,39 @@ function crearAsignaciones() {
 
                   <li>
                     <button @click.prevent="asignaciones"
+                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      Información
+                    </button>
+                  </li>
+                </ul>
+              </details>
+            </li>
+
+            <li>
+              <details class="group [&_summary::-webkit-details-marker]:hidden">
+                <summary
+                  class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                  <span class="text-sm font-medium"> Registros </span>
+
+                  <span class="shrink-0 transition duration-300 group-open:-rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </summary>
+
+                <ul class="mt-2 space-y-1 px-4">
+                  <li>
+                    <button @click.prevent="CrearRegistros"
+                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      Crear Registros
+                    </button>
+                  </li>
+
+                  <li>
+                    <button @click.prevent="registros"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                       Información
                     </button>
