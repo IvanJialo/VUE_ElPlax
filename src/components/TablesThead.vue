@@ -19,6 +19,10 @@ defineProps({
     type: Boolean,
     default: false, // Valor por defecto
   },
+  crearPDF: {
+    type: Boolean,
+    default: false, // Valor por defecto
+  },
 });
 </script>
 
@@ -26,7 +30,7 @@ defineProps({
   <!-- <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4"> -->
     <!-- <table class="min-w-full divide-y divide-gray-300 bg-white text-sm"> -->
       <!-- Cabecera para Estudiantes -->
-      <thead class="bg-gray-100" v-if="estudiante && !empresa && !asignacion && !registro">
+      <thead class="bg-gray-100" v-if="estudiante && !empresa && !asignacion && !registro && !crearPDF">
         <tr>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">DNI</th>
@@ -43,7 +47,7 @@ defineProps({
       </thead>
 
       <!-- Cabecera para Empresas -->
-      <thead class="bg-gray-100" v-if="empresa && !estudiante && !asignacion && !registro">
+      <thead class="bg-gray-100" v-if="empresa && !estudiante && !asignacion && !registro && !crearPDF">
         <tr>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">CIF</th>
@@ -57,7 +61,7 @@ defineProps({
       </thead>
 
       <!-- Cabecera para Asignaciones -->
-      <thead class="bg-gray-100" v-if="asignacion && !empresa && !estudiante && !registro">
+      <thead class="bg-gray-100" v-if="asignacion && !empresa && !estudiante && !registro && !crearPDF">
         <tr>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Estudiante</th>
@@ -68,7 +72,7 @@ defineProps({
       </thead>
 
       <!-- Cabecera para Registros -->
-      <thead class="bg-gray-100" v-if="registro && !empresa && !estudiante && !asignacion">
+      <thead class="bg-gray-100" v-if="registro && !empresa && !estudiante && !asignacion && !crearPDF">
         <tr>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Profesor</th>
@@ -77,7 +81,22 @@ defineProps({
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Llamada</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Correo</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Reunión</th>
-          <th class="px-4 py-3 text-left font-semibold text-gray-700">Observaciones</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Observaciones</th> 
+        </tr>
+      </thead>
+
+      <!-- Cabecera para Crear PDF -->
+      <thead class="bg-gray-100" v-if="!registro && !empresa && !estudiante && !asignacion && crearPDF">
+        <tr>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Profesor</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Empresa</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Fecha</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Llamada</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Correo</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Reunión</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Observaciones</th> 
+          <td class="px-4 py-3 text-center font-semibold text-gray-700">PDF</td>
         </tr>
       </thead>
     <!-- </table> -->

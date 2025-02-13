@@ -2,6 +2,10 @@ import { getProfesores } from './useDatabase'; // Cambia la ruta según la ubica
 
 // Cargar datos de los profesores desde la base de datos de Turso
 let listItem = [];
+if (!localStorage.getItem("listaDocumentoRegistros")) {
+    localStorage.setItem("listaDocumentoRegistros", JSON.stringify([]));
+  }
+localStorage.setItem("crearPDF", false);
 
 async function loadProfesores() {
     try {

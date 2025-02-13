@@ -52,6 +52,16 @@ function getProfesores() {
   return { fetchProfesores };
 }
 
+async function getProfesoresID(id) {
+  try {
+    const result = await turso.execute('SELECT * FROM profesores WHERE id_profesor = ?', [id]); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+    return result;
+  } catch (error) {
+    console.error('Error al obtener profesores:', error); // Muestra errores en la consola
+  }
+}
+
 function getEmpresas() {
   const fetchEmpresas = async () => {
     try {
@@ -232,6 +242,16 @@ function getRegistros() {
   return { fetchRegistros };
 }
 
+async function getRegistrosID(id) {
+  try {
+    const result = await turso.execute('SELECT * FROM registros WHERE id_registros = ?', [id]); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+    return result;
+  } catch (error) {
+    console.error('Error al obtener registros:', error); // Muestra errores en la consola
+  }
+}
+
 async function postInsertarRegistros(llamada_registrada, correo_registrado, reunion_registrada, observacion, fecha_asignacion, id_empresa, id_profesor) {
   try {
     // Convertir los booleanos a 1 o 0
@@ -270,5 +290,7 @@ export {
   putEmpresaId,
   exportCSV,
   getRegistros,
-  postInsertarRegistros
+  postInsertarRegistros,
+  getRegistrosID,
+  getProfesoresID
 }

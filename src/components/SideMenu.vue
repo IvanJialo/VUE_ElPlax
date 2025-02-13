@@ -6,9 +6,9 @@ import { exportCSV } from "@/composables/useDatabase";
 import Swal from 'sweetalert2';
 
   
-  const exportarCSV = () => {
-    exportCSV(); // Llama a la función para exportar datos
-  };
+const exportarCSV = () => {
+  exportCSV(); // Llama a la función para exportar datos
+};
 
 const router = useRouter();
 
@@ -27,6 +27,9 @@ function toggleMenu() {
   }
 }
 
+function exportarPDF(){
+  router.push('/crearPDF');
+}
 function logout() {
   router.push('/');
 }
@@ -360,14 +363,14 @@ function registros() {
                   <li>
                     <button @click.prevent="exportarCSV"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Exportar CSV
+                      Estudiantes y Empresas en CSV
                     </button>
                   </li>
 
                   <li>
-                    <button @click.prevent="asignaciones"
+                    <button @click.prevent="exportarPDF"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Exportar PDF
+                      Registros en PDF
                     </button>
                   </li>
                 </ul>

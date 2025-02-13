@@ -4,7 +4,6 @@ import { postInsertarRegistros } from "../composables/useDatabase";
 
 const idEmpresa = localStorage.getItem('idEmpresa');
 const idProfesor = localStorage.getItem('idProfesor');
-
 // Definimos los datos del formulario como referencias reactivas
 const form = ref({
   llamada_registrada: false,    // Checkbox: Obligatorio de forma opcional

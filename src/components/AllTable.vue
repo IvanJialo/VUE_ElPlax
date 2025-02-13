@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted, defineProps, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { deleteEstudianteId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas, getRegistros, getProfesores } from '../composables/useDatabase';
+import { getListaDocumentoRegistros } from '../composables/usePDF';
 
 const router = useRouter();
 // Definiendo las props
@@ -21,16 +22,31 @@ const props = defineProps({
   registro: {
     type: Object,
     required: false,
+    
   },
 });
 
+const globalListaDocumentoRegistros = getListaDocumentoRegistros();
 const clases = ref([]);
 const registros = ref([]);
 const nombreEstudiante = ref('Cargando...');
 const nombreEmpresa = ref('Cargando...');
 const nombreProfesor = ref('Cargando...');
+const crearPDF = ref(false);
 
 onMounted(async () => {
+  try {
+    const storedValue = await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(localStorage.getItem('crearPDF') === 'true');
+      }, 100); // Simulando posible retraso
+    });
+
+    crearPDF.value = storedValue;
+  } catch (error) {
+    console.error('Error al obtener crearPDF del localStorage:', error);
+  }
+
   const { fetchClases } = getClases();
   const result = await fetchClases();
   if (result) {
@@ -62,8 +78,18 @@ onMounted(async () => {
   if (props.registro?.id_empresa) {
     nombreEmpresa.value = await obtenerNombreEmpresa(props.registro.id_empresa);
   }
-
 });
+
+const toggleRegistro = (id) => {
+  if (globalListaDocumentoRegistros.value.includes(id)) {
+    globalListaDocumentoRegistros.value = globalListaDocumentoRegistros.value.filter(item => item !== id);
+  } else {
+    globalListaDocumentoRegistros.value.push(id);
+  }
+};
+
+const isChecked = (id) => globalListaDocumentoRegistros.value.includes(id);
+
 
 function nombreDeClase(id) {
   const clase = clases.value.find((clase) => clase.id_clase === id);
@@ -230,20 +256,59 @@ function eliminarEmpresa(id) {
       </tbody>
 
       <!-- Cuerpo para Registros -->
-      <tbody class="divide-y divide-gray-200" v-if="registro && !empresa && !estudiante && !asignacion">
+      <tbody class="divide-y divide-gray-200" v-if="registro && !empresa && !estudiante && !asignacion && !crearPDF">
         <tr class="hover:bg-gray-50 transition-colors">
           <td class="px-4 py-3 text-gray-900 font-medium">{{ registro.id_registros }}</td>
           <td class="px-4 py-3 text-gray-700">{{ nombreProfesor }}</td>
           <td class="px-4 py-3 text-gray-700">{{ nombreEmpresa }}</td>
           <td class="px-4 py-3 text-gray-700">{{ registro.fecha_asignacion }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ registro.llamada_registrada }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ registro.correo_registrado }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ registro.reunion_registrada }}</td>
+          <td class="px-4 py-3 text-center">
+            <span v-if="registro.llamada_registrada" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+            <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <span v-if="registro.correo_registrado" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+            <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <span v-if="registro.reunion_registrada" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+            <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+          </td>
           <td class="px-4 py-3 text-gray-700">{{ registro.observacion }}</td>
         </tr>
       </tbody>
 
-      
+      <!-- Cuerpo para Crear PDF -->
+      <tbody class="divide-y divide-gray-200" v-if="crearPDF && registro && !empresa && !estudiante && !asignacion">
+    <tr class="hover:bg-gray-50 transition-colors">
+      <td class="px-4 py-3 text-gray-900 font-medium">{{ registro.id_registros }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ nombreProfesor }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ nombreEmpresa }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ registro.fecha_asignacion }}</td>
+      <td class="px-4 py-3 text-center">
+        <span v-if="registro.llamada_registrada" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+        <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+      </td>
+      <td class="px-4 py-3 text-center">
+        <span v-if="registro.correo_registrado" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+        <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+      </td>
+      <td class="px-4 py-3 text-center">
+        <span v-if="registro.reunion_registrada" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+        <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+      </td>
+      <td class="px-4 py-3 text-gray-700">{{ registro.observacion }}</td>
+      <td class="px-4 py-3 text-gray-700">
+        <div class="flex items-center gap-2">
+          <input 
+          type="checkbox" 
+          :checked="isChecked(registro.id_registros)" 
+          @change="toggleRegistro(registro.id_registros)"
+          >
+      </div>
+      </td>
+    </tr>
+  </tbody>
     <!-- </table>
   </div> -->
 </template>
