@@ -50,12 +50,19 @@ defineProps({
       <thead class="bg-gray-100" v-if="empresa && !estudiante && !asignacion && !registro && !crearPDF">
         <tr>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
-          <th class="px-4 py-3 text-left font-semibold text-gray-700">CIF</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Nombre</th>
-          <th class="px-4 py-3 text-left font-semibold text-gray-700">Teléfono</th>
-          <th class="px-4 py-3 text-left font-semibold text-gray-700">Email</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">CIF</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Dirección</th>
-          <th class="px-4 py-3 text-left font-semibold text-gray-700">Capacidad</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Población</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">CP</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Provincia</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Telf</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Actividad Principal</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Otras Actividades</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Descripción</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Interesado En</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Estado</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Profesor</th>
           <th class="px-4 py-3 text-center font-semibold text-gray-700">Acciones</th>
         </tr>
       </thead>

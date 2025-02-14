@@ -33,6 +33,7 @@ const nombreEstudiante = ref('Cargando...');
 const nombreEmpresa = ref('Cargando...');
 const nombreProfesor = ref('Cargando...');
 const crearPDF = ref(false);
+const nombresProfesores = ref([]);
 
 onMounted(async () => {
   try {
@@ -78,6 +79,20 @@ onMounted(async () => {
   if (props.registro?.id_empresa) {
     nombreEmpresa.value = await obtenerNombreEmpresa(props.registro.id_empresa);
   }
+
+  // Obtener nombres de profesores para todas las empresas
+  const { fetchEmpresas } = getEmpresas();
+  const empresas = await fetchEmpresas();
+  
+
+  for (const empresa of empresas.rows) {
+    if (empresa.profesor) {
+      const nombreProfesor = await obtenerNombreProfesor(empresa.profesor);
+      nombresProfesores.push(nombreProfesor);
+    }
+  }
+
+  console.log(nombresProfesores);
 });
 
 const toggleRegistro = (id) => {
@@ -115,7 +130,7 @@ async function obtenerNombreEmpresa(id) {
     const { fetchEmpresas } = getEmpresas();
     const empresas = await fetchEmpresas();
     const empresa = empresas.rows.find((emp) => emp.id_empresa === id);
-    return empresa ? empresa.nombre_empresa : 'Desconocido';
+    return empresa ? empresa.nombre : 'Desconocido';
   } catch (error) {
     console.error('Error al obtener empresas:', error);
     return 'Desconocido';
@@ -209,12 +224,20 @@ function eliminarEmpresa(id) {
       <tbody class="divide-y divide-gray-200" v-if="empresa && !estudiante && !asignacion && !registro">
         <tr class="hover:bg-gray-50 transition-colors">
           <td class="px-4 py-3 text-gray-900 font-medium">{{ empresa.id_empresa }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.CIF }}</td>
-          <td class="px-4 py-3 text-gray-900">{{ empresa.nombre_empresa }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.telefono }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.email }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.direccion }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.capacidad }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.nombre }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.nombre_oficial }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.direccion_sede_central }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.poblacion }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.codigo_postal }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.provincia }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.telefono_empresa }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.actividad_principal }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.otras_actividades }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.descripcion_breve }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.interesado_en }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.estado_actual }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ nombresProfesores }}</td>
+          
           <td class="px-4 py-3 flex justify-center gap-2">
             <button 
               @click="editarEmpresa(empresa.id_empresa)"

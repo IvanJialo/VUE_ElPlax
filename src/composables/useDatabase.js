@@ -116,19 +116,20 @@ async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, dire
   }
 }
 
-async function postInsertarEmpresas(cif, nombre, telefono, email, direccion, capacidad, observacion) {
+async function postInsertarEmpresas(nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, telefono_empresa, actividad_principal, otras_actividades, descripcion_breve, interesado_en, estado_actual, profesor) {
   try {
     const query = `
-        INSERT INTO empresas (CIF, nombre_empresa, telefono, email, direccion, capacidad, observacion) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO empresas (nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, telefono_empresa, actividad_principal, otras_actividades, descripcion_breve, interesado_en, estado_actual, profesor) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
-    const values = [cif, nombre, telefono, email, direccion, capacidad, observacion];
+    const values = [nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, telefono_empresa, actividad_principal, otras_actividades, descripcion_breve, interesado_en, estado_actual, profesor];
     const result = await turso.execute(query, values); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
   } catch (error) {
     console.error('Error al insertar empresas:', error); // Muestra errores en la consola
   }
 }
+
 
 async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignacion, fecha_finalizacion) {
   try {
@@ -181,14 +182,14 @@ async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccio
   }
 }
 
-async function putEmpresaId(id, cif, nombre, telefono, email, direccion, capacidad, observacion) {
+async function putEmpresaId(id, nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, telefono_empresa, actividad_principal, otras_actividades, descripcion_breve, interesado_en, estado_actual, profesor) {
   try {
     const query = `
         UPDATE empresas 
-        SET CIF = ?, nombre_empresa = ?, telefono = ?, email = ?, direccion = ?, capacidad = ?, observacion = ? 
+        SET nombre = ?, nombre_oficial = ?, direccion_sede_central = ?, poblacion = ?, codigo_postal = ?, provincia = ?, telefono_empresa = ?, actividad_principal = ?, otras_actividades = ?, descripcion_breve = ?, interesado_en = ?, estado_actual = ?, profesor = ? 
         WHERE id_empresa = ?
         `;
-    const values = [cif, nombre, telefono, email, direccion, capacidad, observacion, id];
+    const values = [nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, telefono_empresa, actividad_principal, otras_actividades, descripcion_breve, interesado_en, estado_actual, profesor, id];
 
     const result = await turso.execute(query, values); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
