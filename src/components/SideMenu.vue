@@ -110,7 +110,7 @@ function registros() {
 
               <ul class="space-y-1 border-t border-gray-100 pt-4">
                 <li>
-                  <RouterLink to="/home" @click="toggleMenu"
+                  <RouterLink to="/home"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                       <path fill="#b197ff"
@@ -124,7 +124,7 @@ function registros() {
                   </RouterLink>
                 </li>
                 <li>
-                  <RouterLink to="/crearAlumno" @click="toggleMenu"
+                  <RouterLink to="/crearAlumno"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                       <g fill="none" stroke="#b197ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -143,7 +143,7 @@ function registros() {
                 </li>
 
                 <li>
-                  <RouterLink to="/crearEmpresa" @click="toggleMenu"
+                  <RouterLink to="/crearEmpresa" 
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
                       <path fill="#b197ff" d="M8 8h2v4H8zm0 6h2v4H8zm6-6h2v4h-2zm0 6h2v4h-2zm-6 6h2v4H8zm6 0h2v4h-2z" />
@@ -159,7 +159,7 @@ function registros() {
                 </li>
 
                 <li>
-                  <RouterLink to="/crearAsignacion" @click="toggleMenu"
+                  <RouterLink to="/crearAsignacion"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
                       <path fill="#b197ff"
@@ -173,7 +173,7 @@ function registros() {
                   </RouterLink>
                 </li>
                 <li>
-                  <a href="#" @click="toggleMenu"
+                  <a href="#"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <ExportData />
                     <span
