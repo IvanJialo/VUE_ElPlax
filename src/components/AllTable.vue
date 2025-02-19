@@ -84,15 +84,15 @@ onMounted(async () => {
   const { fetchEmpresas } = getEmpresas();
   const empresas = await fetchEmpresas();
   
-
-  for (const empresa of empresas.rows) {
-    if (empresa.profeso) {
-      const nombreProfesor = await obtenerNombreProfesor(empresa.profeso);
-      nombresProfesores.push(nombreProfesor);
-    }
-  }
-
-  console.log(nombresProfesores);
+  nombresProfesores.value = await obtenerNombreProfesor(props.empresa.profesor);
+    
+  
+  // for (const empresa of empresas.rows) {
+  //   const nombreProfesor = await obtenerNombreProfesor(empresa.profesor);
+  //   console.log(nombreProfesor);
+  //   nombresProfesores.value = await obtenerNombreProfesor(empresa.profesor);
+  // }
+    
 });
 
 const toggleRegistro = (id) => {
@@ -143,7 +143,7 @@ async function obtenerNombreProfesor(id) {
     const { fetchProfesores } = getProfesores();
     const profesores = await fetchProfesores();
     const profesor = profesores.rows.find((prof) => prof.id_profesor === id);
-    return profesor ? `${profesor.nombre} ${profesor.apellido}` : 'Desconocido';
+    return profesor ? profesor.nombre : 'Desconocido';
   } catch (error) {
     console.error('Error al obtener profesores:', error);
     return 'Desconocido';
