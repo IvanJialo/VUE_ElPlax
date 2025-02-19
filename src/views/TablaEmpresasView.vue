@@ -40,7 +40,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
+  <div class="ml-20 mr-4" >
     <p v-if="error" class="text-red-500">{{ error }}</p>
     <div v-else>
       <!-- Componente de filtro -->
@@ -48,7 +48,7 @@ onMounted(async () => {
 
       <!-- Tabla de Empresas -->
       <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
-        <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
+        <table class="min-w-full fit-con divide-y divide-gray-300 bg-white text-sm">
           <!-- Renderizar encabezado de empresas -->
           <TablesThead :empresa="true" />
 
