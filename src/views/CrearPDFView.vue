@@ -4,7 +4,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import AllTable from "../components/AllTable.vue";
 import TablesThead from "../components/TablesThead.vue";
-import { getRegistros, getRegistrosID, getEmpresasID, getProfesoresID } from "../composables/useDatabase";
+import { getRegistros, getRegistrosID, getEmpresas, getProfesoresID } from "../composables/useDatabase";
 import { getListaDocumentoRegistros } from '../composables/usePDF';
 
 // Estados reactivos
@@ -37,6 +37,17 @@ onMounted(async () => {
   }
 });
 
+async function obtenerNombreEmpresa(id) {
+  try {
+    const { fetchEmpresas } = getEmpresas();
+    const empresas = await fetchEmpresas();
+    const empresa = empresas.rows.find((emp) => emp.id_empresa === id);
+    return empresa ? empresa.nombre : 'Desconocido';
+  } catch (error) {
+    console.error('Error al obtener empresas:', error);
+    return 'Desconocido';
+  }
+}
 
 async function botonCrearPDF() {
   console.log("Creando PDF...");
@@ -70,8 +81,8 @@ const filteredArray = array.filter(row => row !== null);
   const doc = new jsPDF("landscape");
   doc.setFontSize(16);
   //haz esto con una promesa: doc.text(`Listado de registros hecho por ${getProfesoresID(idProfesor)}`, 14, 20);
-    const profesor = await getProfesoresID(idProfesor);
-    doc.text(`Listado de registros hecho por ${profesor?.rows?.[0]?.nombre}`, 14, 20);
+  const profesor = await getProfesoresID(idProfesor);
+  doc.text(`Listado de registros hecho por ${profesor?.rows?.[0]?.nombre}`, 14, 20);
   doc.setFontSize(12);
   doc.text(`Observaciones: ${observaciones}`, 14, 30);
   doc.text("Registros:", 14, 40);
@@ -79,18 +90,17 @@ const filteredArray = array.filter(row => row !== null);
   // Transformamos los datos para que se incluyan en la tabla correctamente
   const bodyData = await Promise.all(filteredArray.map(async (row) => {
     const [empresaResult, profesorResult] = await Promise.all([
-        getEmpresasID(row.id_empresa),
+        obtenerNombreEmpresa(row.id_empresa),
         getProfesoresID(row.id_profesor),
     ]);
 
     // Asegurar que los resultados tienen datos válidos
-    const empresa = empresaResult?.rows?.[0]?.nombre || "-";
     const profesor = profesorResult?.rows?.[0]?.nombre || "-";
 
     return [
         row.id_registros,
         row.fecha_asignacion || "-",
-        empresa,
+        empresaResult,
         profesor,
         row.llamada_registrada ? "Si" : "No",
         row.correo_registrado ? "Si" : "No",

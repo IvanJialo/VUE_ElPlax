@@ -86,8 +86,8 @@ onMounted(async () => {
   
 
   for (const empresa of empresas.rows) {
-    if (empresa.profesor) {
-      const nombreProfesor = await obtenerNombreProfesor(empresa.profesor);
+    if (empresa.profeso) {
+      const nombreProfesor = await obtenerNombreProfesor(empresa.profeso);
       nombresProfesores.push(nombreProfesor);
     }
   }
