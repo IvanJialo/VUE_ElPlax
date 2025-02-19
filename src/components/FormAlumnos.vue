@@ -58,7 +58,7 @@ const limpiarFormulario = () => {
   <section class="max-h-screen flex items-center">
     <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-center font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#DCD0FF] via-purple-500 to-[#b197ff] sm:text-3xl mb-6">
-        Creación de Alumnos
+        Creación de Estudiantes
       </h2>
 
       <div class="mx-auto max-w-lg">
@@ -110,15 +110,15 @@ const limpiarFormulario = () => {
                 </div>
               </div>
 
-                            <div>
-                                <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
-                                <input
-                                    id="direccion"
-                                    type="text"
-                                    class="w-full rounded-lg border-gray-200 focus:border-purple-500 p-3 text-sm shadow-sm"
-                                    placeholder="Dirección completa"
-                                />
-                            </div>
+                <div>
+                    <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
+                    <input
+                        id="direccion"
+                        type="text"
+                        class="w-full rounded-lg border-gray-200 focus:border-purple-500 p-3 text-sm shadow-sm"
+                        placeholder="Dirección completa"
+                    />
+                </div>
 
               <div class="flex items-center gap-2">
                 <input v-model="form.vehiculo" id="vehiculo" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-purple-500 focus:ring-purple-500" />
