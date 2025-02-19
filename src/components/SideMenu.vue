@@ -29,27 +29,35 @@ function toggleMenu() {
 
 function exportarPDF(){
   router.push('/crearPDF');
+  toggleMenu();
 }
 function logout() {
   router.push('/');
+  toggleMenu();
 }
 function estudiantes() {
   router.push('/estudiantes');
+  toggleMenu();
 }
 function empresas() {
   router.push('/empresas');
+  toggleMenu();
 }
 function asignaciones() {
   router.push('/asignaciones');
+  toggleMenu();
 }
 function crearEstudiantes() {
   router.push('/crearAlumno');
+  toggleMenu();
 }
 function crearEmpresas() {
   router.push('/crearEmpresa');
+  toggleMenu();
 }
 function crearAsignaciones() {
   router.push('/crearAsignacion');
+  toggleMenu();
 }
 function CrearRegistros() {
   Swal.fire({
@@ -65,10 +73,12 @@ function CrearRegistros() {
     confirmButtonText: 'Aceptar'
   }).then(() => {
     router.push('/empresas');
+    toggleMenu();
   });
 }
 function registros() {
   router.push('/registros');
+  toggleMenu();
 }
 
 </script>
@@ -89,12 +99,7 @@ function registros() {
               <div class="py-4" @click="toggleMenu">
                 <a href="#" id="general-menu"
                   class="t group relative flex justify-center rounded px-2 py-1.5 text-[#b197ff]">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#b197ff" d="M3 18v-2h18v2zm0-5v-2h18v2zm0-5V6h18v2z"/></svg>
 
                   <span
                     class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
@@ -105,7 +110,7 @@ function registros() {
 
               <ul class="space-y-1 border-t border-gray-100 pt-4">
                 <li>
-                  <RouterLink to="/home"
+                  <RouterLink to="/home" @click="toggleMenu"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                       <path fill="#b197ff"
@@ -119,7 +124,7 @@ function registros() {
                   </RouterLink>
                 </li>
                 <li>
-                  <RouterLink to="/crearAlumno"
+                  <RouterLink to="/crearAlumno" @click="toggleMenu"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
                       <g fill="none" stroke="#b197ff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -138,7 +143,7 @@ function registros() {
                 </li>
 
                 <li>
-                  <RouterLink to="/crearEmpresa"
+                  <RouterLink to="/crearEmpresa" @click="toggleMenu"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
                       <path fill="#b197ff" d="M8 8h2v4H8zm0 6h2v4H8zm6-6h2v4h-2zm0 6h2v4h-2zm-6 6h2v4H8zm6 0h2v4h-2z" />
@@ -154,7 +159,7 @@ function registros() {
                 </li>
 
                 <li>
-                  <RouterLink to="/crearAsignacion"
+                  <RouterLink to="/crearAsignacion" @click="toggleMenu"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
                       <path fill="#b197ff"
@@ -168,7 +173,7 @@ function registros() {
                   </RouterLink>
                 </li>
                 <li>
-                  <a href="#"
+                  <a href="#" @click="toggleMenu"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <ExportData />
                     <span
@@ -361,14 +366,14 @@ function registros() {
 
                 <ul class="mt-2 space-y-1 px-4">
                   <li>
-                    <button @click.prevent="exportarCSV"
+                    <button @click.prevent="exportarCSV" @click="toggleMenu"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                       Estudiantes y Empresas en CSV
                     </button>
                   </li>
 
                   <li>
-                    <button @click.prevent="exportarPDF"
+                    <button @click.prevent="exportarPDF" @click="toggleMenu"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                       Registros en PDF
                     </button>
