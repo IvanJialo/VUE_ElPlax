@@ -11,6 +11,7 @@ import crearEmpresa from '../views/CrearEmpresaView.vue'
 import crearAsignacion from '../views/CrearAsignacionView.vue'
 import crearRegistro from '../views/CrearRegistroView.vue'
 import tablaDeRegistros from '../views/TablaRegistrosView.vue'
+import crearPDF from '../views/CrearPDFView.vue'
 
 
 const router = createRouter({
@@ -75,6 +76,11 @@ const router = createRouter({
       path: '/registros',
       name: 'registros',
       component: tablaDeRegistros,
+    },
+    {
+      path: '/crearPDF',
+      name: 'crearPDF',
+      component: crearPDF,
     },
   ],
 })

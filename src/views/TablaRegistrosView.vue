@@ -7,9 +7,19 @@ import { getRegistros } from "../composables/useDatabase";
 // Estados reactivos
 const registros = ref([]);
 const error = ref(null);
-
+const crearPDF = ref(false);
 // Cargar registros al montar el componente
 onMounted(async () => {
+    try {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(localStorage.setItem('crearPDF', false));
+      }, 100); // Simulando posible retraso
+    });
+} catch (err) {
+    error.value = "Hubo un error al cargar los datos.";
+    console.error(err);
+}
   try {
     const { fetchRegistros } = getRegistros();
     const data = await fetchRegistros();

@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted, defineProps } from 'vue';
+import { ref, onMounted, defineProps, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { deleteEstudianteId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas, getRegistros, getProfesores } from '../composables/useDatabase';
+import { getListaDocumentoRegistros } from '../composables/usePDF';
 
 const router = useRouter();
 // Definiendo las props
@@ -21,16 +22,32 @@ const props = defineProps({
   registro: {
     type: Object,
     required: false,
+    
   },
 });
 
+const globalListaDocumentoRegistros = getListaDocumentoRegistros();
 const clases = ref([]);
 const registros = ref([]);
 const nombreEstudiante = ref('Cargando...');
 const nombreEmpresa = ref('Cargando...');
 const nombreProfesor = ref('Cargando...');
+const crearPDF = ref(false);
+const nombresProfesores = ref([]);
 
 onMounted(async () => {
+  try {
+    const storedValue = await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(localStorage.getItem('crearPDF') === 'true');
+      }, 100); // Simulando posible retraso
+    });
+
+    crearPDF.value = storedValue;
+  } catch (error) {
+    console.error('Error al obtener crearPDF del localStorage:', error);
+  }
+
   const { fetchClases } = getClases();
   const result = await fetchClases();
   if (result) {
@@ -63,7 +80,31 @@ onMounted(async () => {
     nombreEmpresa.value = await obtenerNombreEmpresa(props.registro.id_empresa);
   }
 
+  // Obtener nombres de profesores para todas las empresas
+  const { fetchEmpresas } = getEmpresas();
+  const empresas = await fetchEmpresas();
+  
+
+  for (const empresa of empresas.rows) {
+    if (empresa.profesor) {
+      const nombreProfesor = await obtenerNombreProfesor(empresa.profesor);
+      nombresProfesores.push(nombreProfesor);
+    }
+  }
+
+  console.log(nombresProfesores);
 });
+
+const toggleRegistro = (id) => {
+  if (globalListaDocumentoRegistros.value.includes(id)) {
+    globalListaDocumentoRegistros.value = globalListaDocumentoRegistros.value.filter(item => item !== id);
+  } else {
+    globalListaDocumentoRegistros.value.push(id);
+  }
+};
+
+const isChecked = (id) => globalListaDocumentoRegistros.value.includes(id);
+
 
 function nombreDeClase(id) {
   const clase = clases.value.find((clase) => clase.id_clase === id);
@@ -89,7 +130,7 @@ async function obtenerNombreEmpresa(id) {
     const { fetchEmpresas } = getEmpresas();
     const empresas = await fetchEmpresas();
     const empresa = empresas.rows.find((emp) => emp.id_empresa === id);
-    return empresa ? empresa.nombre_empresa : 'Desconocido';
+    return empresa ? empresa.nombre : 'Desconocido';
   } catch (error) {
     console.error('Error al obtener empresas:', error);
     return 'Desconocido';
@@ -183,12 +224,20 @@ function eliminarEmpresa(id) {
       <tbody class="divide-y divide-gray-200" v-if="empresa && !estudiante && !asignacion && !registro">
         <tr class="hover:bg-gray-50 transition-colors">
           <td class="px-4 py-3 text-gray-900 font-medium">{{ empresa.id_empresa }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.CIF }}</td>
-          <td class="px-4 py-3 text-gray-900">{{ empresa.nombre_empresa }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.telefono }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.email }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.direccion }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ empresa.capacidad }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.nombre }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.nombre_oficial }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.direccion_sede_central }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.poblacion }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.codigo_postal }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.provincia }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.telefono_empresa }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.actividad_principal }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.otras_actividades }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.descripcion_breve }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.interesado_en }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ empresa.estado_actual }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ nombresProfesores }}</td>
+          
           <td class="px-4 py-3 flex justify-center gap-2">
             <button 
               @click="editarEmpresa(empresa.id_empresa)"
@@ -230,20 +279,59 @@ function eliminarEmpresa(id) {
       </tbody>
 
       <!-- Cuerpo para Registros -->
-      <tbody class="divide-y divide-gray-200" v-if="registro && !empresa && !estudiante && !asignacion">
+      <tbody class="divide-y divide-gray-200" v-if="registro && !empresa && !estudiante && !asignacion && !crearPDF">
         <tr class="hover:bg-gray-50 transition-colors">
           <td class="px-4 py-3 text-gray-900 font-medium">{{ registro.id_registros }}</td>
           <td class="px-4 py-3 text-gray-700">{{ nombreProfesor }}</td>
           <td class="px-4 py-3 text-gray-700">{{ nombreEmpresa }}</td>
           <td class="px-4 py-3 text-gray-700">{{ registro.fecha_asignacion }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ registro.llamada_registrada }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ registro.correo_registrado }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ registro.reunion_registrada }}</td>
+          <td class="px-4 py-3 text-center">
+            <span v-if="registro.llamada_registrada" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+            <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <span v-if="registro.correo_registrado" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+            <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <span v-if="registro.reunion_registrada" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+            <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+          </td>
           <td class="px-4 py-3 text-gray-700">{{ registro.observacion }}</td>
         </tr>
       </tbody>
 
-      
+      <!-- Cuerpo para Crear PDF -->
+      <tbody class="divide-y divide-gray-200" v-if="crearPDF && registro && !empresa && !estudiante && !asignacion">
+    <tr class="hover:bg-gray-50 transition-colors">
+      <td class="px-4 py-3 text-gray-900 font-medium">{{ registro.id_registros }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ nombreProfesor }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ nombreEmpresa }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ registro.fecha_asignacion }}</td>
+      <td class="px-4 py-3 text-center">
+        <span v-if="registro.llamada_registrada" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+        <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+      </td>
+      <td class="px-4 py-3 text-center">
+        <span v-if="registro.correo_registrado" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+        <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+      </td>
+      <td class="px-4 py-3 text-center">
+        <span v-if="registro.reunion_registrada" class="inline-block w-6 h-6 bg-green-100 text-green-700 rounded-full">✓</span>
+        <span v-else class="inline-block w-6 h-6 bg-red-100 text-red-700 rounded-full">✕</span>
+      </td>
+      <td class="px-4 py-3 text-gray-700">{{ registro.observacion }}</td>
+      <td class="px-4 py-3 text-gray-700">
+        <div class="flex items-center gap-2">
+          <input 
+          type="checkbox" 
+          :checked="isChecked(registro.id_registros)" 
+          @change="toggleRegistro(registro.id_registros)"
+          >
+      </div>
+      </td>
+    </tr>
+  </tbody>
     <!-- </table>
   </div> -->
 </template>
