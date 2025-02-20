@@ -130,6 +130,20 @@ async function postInsertarEmpresas(nombre, nombre_oficial, direccion_sede_centr
   }
 }
 
+async function postInsertarContactos(id_empresa, nombre, email, telefono) {
+  try {
+    const query = `
+        INSERT INTO contacto_empresas (id_empresa, nombre, email, telefono) 
+        VALUES (?, ?, ?, ?)
+        `;
+    const values = [id_empresa, nombre, email, telefono];
+    const result = await turso.execute(query, values); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al insertar contactos:', error); // Muestra errores en la consola
+  }
+}
+
 
 async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignacion, fecha_finalizacion) {
   try {
@@ -284,6 +298,7 @@ export {
   getAsignaciones,
   postInsertarEstudiantes,
   postInsertarEmpresas,
+  postInsertarContactos,
   postInsertarAsignaciones,
   deleteEstudianteId,
   deleteEmpresaId,
