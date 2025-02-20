@@ -66,7 +66,7 @@ const handleFileUpload = (event) => {
               descripcion_breve: row[9],
               interesado_en: row[10],
               estado_actual: row[11],
-              id_profesor: parseInt(row[12], 10),
+              id_profesor: parseInt(row[12], 10) || null, // Asegurarse de que sea un número válido o null
             });
             break;
           case 'contactos':
@@ -75,7 +75,7 @@ const handleFileUpload = (event) => {
               break;
             }
             contactos.push({
-              id_empresa: parseInt(row[0], 10),
+              id_empresa: parseInt(row[0], 10) || null, // Asegurarse de que sea un número válido o null
               nombre: row[1],
               email: row[2],
               telefono: row[3],
@@ -90,7 +90,7 @@ const handleFileUpload = (event) => {
               dni: row[0],
               nombre: row[1],
               apellido: row[2],
-              id_clase: parseInt(row[3], 10),
+              id_clase: parseInt(row[3], 10) || null, // Asegurarse de que sea un número válido o null
               fecha_nacimiento: row[4],
               direccion: row[5],
               email: row[6],
