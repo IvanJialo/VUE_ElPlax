@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import ExportData from '../components/ExportData.vue';
-import { exportCSV } from "@/composables/useDatabase";
+import ImportCSV from '../components/ImportCSV.vue';
+import { exportCSV, postInsertarEmpresas, postInsertarContactos, postInsertarEstudiantes } from "@/composables/useDatabase";
 import Swal from 'sweetalert2';
 
   
@@ -80,6 +81,58 @@ function registros() {
   router.push('/registros');
   toggleMenu();
 }
+
+const handleDataImported = async (data) => {
+  try {
+    if (data.empresas && data.empresas.length > 0) {
+      for (const empresa of data.empresas) {
+        await postInsertarEmpresas(
+          empresa.nombre,
+          empresa.nombre_oficial,
+          empresa.direccion_sede_central,
+          empresa.poblacion,
+          empresa.codigo_postal,
+          empresa.provincia,
+          empresa.telefono_empresa,
+          empresa.actividad_principal,
+          empresa.otras_actividades,
+          empresa.descripcion_breve,
+          empresa.interesado_en,
+          empresa.estado_actual,
+          empresa.id_profesor
+        );
+      }
+    }
+    if (data.contactos && data.contactos.length > 0) {
+      for (const contacto of data.contactos) {
+        await postInsertarContactos(
+          contacto.id_empresa,
+          contacto.nombre,
+          contacto.email,
+          contacto.telefono
+        );
+      }
+    }
+    if (data.estudiantes && data.estudiantes.length > 0) {
+      for (const estudiante of data.estudiantes) {
+        await postInsertarEstudiantes(
+          estudiante.dni,
+          estudiante.nombre,
+          estudiante.apellido,
+          estudiante.id_clase,
+          estudiante.fecha_nacimiento,
+          estudiante.direccion,
+          estudiante.email,
+          estudiante.telefono,
+          estudiante.tiene_vehiculo
+        );
+      }
+    }
+    console.log('Datos importados y guardados correctamente');
+  } catch (error) {
+    console.error('Error al importar datos:', error);
+  }
+};
 
 </script>
 
@@ -179,6 +232,16 @@ function registros() {
                     <span
                       class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
                       Exportar
+                    </span>
+                  </a>
+                </li>
+                <li>
+                  <a href="#"
+                    class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
+                    <ImportCSV @data-imported="handleDataImported"/>
+                    <span
+                      class="invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
+                      Importar CSV
                     </span>
                   </a>
                 </li>
