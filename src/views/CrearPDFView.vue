@@ -149,8 +149,8 @@ const filteredArray = array.filter(row => row !== null);
   <div>
     <p v-if="error" class="text-red-500">{{ error }}</p>
     <div v-else>
-      <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
-        <div>
+      <div class="flex flex-col space-y-4">
+        <div class="flex flex-col">
           <label for="observacion" class="block text-sm font-medium text-gray-700">Observaciones</label>
           <textarea
             v-model="txtDocumentPDF"
@@ -160,7 +160,11 @@ const filteredArray = array.filter(row => row !== null);
             rows="4"
           ></textarea>
         </div>
-        <button @click="botonCrearPDF" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-4">Crear PDF</button>
+        <div class="flex justify-end">
+          <button @click="botonCrearPDF" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Crear PDF</button>
+        </div>
+      </div>
+      <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
         <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
           <!-- Renderizar encabezado de registros -->
           <TablesThead :crearPDF="true" />
@@ -171,7 +175,6 @@ const filteredArray = array.filter(row => row !== null);
             :key="registro.id_registros"
             :registro="registro"
           />
-          
         </table>
       </div>
     </div>
