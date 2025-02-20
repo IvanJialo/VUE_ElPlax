@@ -21,7 +21,7 @@ const filteredEmpresas = computed(() => {
   return empresas.value.filter(empresa => {
     // Filtra por nombre
     return (
-      empresa.nombre_empresa.toLowerCase().includes(filterText.value)
+      empresa.nombre.toLowerCase().includes(filterText.value)
     );
   });
 });
