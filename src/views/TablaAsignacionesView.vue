@@ -26,7 +26,7 @@ const filteredAsignaciones = computed(() => {
       asignacion.id_estudiante.toString().includes(searchTerm) ||
       asignacion.id_empresa.toString().includes(searchTerm) ||
       (asignacion.nombre_estudiante && asignacion.nombre_estudiante.toLowerCase().includes(searchTerm)) ||
-      (asignacion.nombre_empresa && asignacion.nombre_empresa.toLowerCase().includes(searchTerm))
+      (asignacion.nombre && asignacion.nombre.toLowerCase().includes(searchTerm))
     );
   });
 });
@@ -45,13 +45,13 @@ onMounted(async () => {
 
     const { fetchEmpresas } = getEmpresas();
     const empresasData = await fetchEmpresas();
-    const empresasMap = new Map(empresasData.rows.map(e => [e.id_empresa, e.nombre_empresa]));
+    const empresasMap = new Map(empresasData.rows.map(e => [e.id_empresa, e.nombre]));
 
     // Añadir nombres a las asignaciones
     asignaciones.value = asignaciones.value.map(asignacion => ({
       ...asignacion,
       nombre_estudiante: estudiantesMap.get(asignacion.id_estudiante) || 'Desconocido',
-      nombre_empresa: empresasMap.get(asignacion.id_empresa) || 'Desconocido'
+      nombre: empresasMap.get(asignacion.id_empresa) || 'Desconocido'
     }));
   } catch (err) {
     error.value = "Hubo un error al cargar los datos.";
