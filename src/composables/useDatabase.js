@@ -216,17 +216,24 @@ async function exportCSV() {
   try {
     const estudiantes = await getEstudiantes().fetchEstudiantes();
     const empresas = await getEmpresas().fetchEmpresas();
+    // const contactos = await getContactos().fetchContactos(); // Asegúrate de tener una función para obtener contactos
 
     const data = [
-      { title: "Estudiantes", rows: estudiantes.rows },
       { title: "Empresas", rows: empresas.rows },
+      // { title: "Contactos", rows: contactos.rows },
+      { title: "Estudiantes", rows: estudiantes.rows },
     ];
 
     const csvContent = data
       .map(
         (section) =>
-          `${section.title}\n` +
-          section.rows.map((row) => Object.values(row).join(",")).join("\n")
+          `title,${section.title}\n` +
+          Object.keys(section.rows[0]).filter(key => key !== 'id_estudiante').join(",") + "\n" + // Excluir el ID de estudiantes
+          section.rows.map((row) => 
+            Object.values(row)
+                  .filter((value, index) => index !== 0) // Excluir el primer valor (ID de estudiantes)
+                  .join(",")
+          ).join("\n")
       )
       .join("\n\n");
 
@@ -234,13 +241,13 @@ async function exportCSV() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", "datos.csv");
+    link.setAttribute("download", "ElPlax.csv");
     link.style.display = "none";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   } catch (error) {
-    console.error("Error al r CSV:", error);
+    console.error("Error al exportar CSV:", error);
   }
 }
 
