@@ -50,7 +50,7 @@ async function handleLogin() {
     console.log(response);
 
     if (response.success) {
-      alert('Login exitoso');
+      console.log('Login exitoso');
       router.push('/home');
     }
   } catch (error) {
