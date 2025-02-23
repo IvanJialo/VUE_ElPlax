@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import ExportData from '../components/ExportData.vue';
 import ImportCSV from '../components/ImportCSV.vue';
+import { logout } from '@/composables/login';
 import { exportCSV, postInsertarEmpresas, postInsertarContactos, postInsertarEstudiantes } from "@/composables/useDatabase";
 import Swal from 'sweetalert2';
 
@@ -14,6 +15,12 @@ const exportarCSV = () => {
 const router = useRouter();
 
 const isMenuOpen = ref(false);
+
+const handleLogout = () => {
+  logout();
+  router.push('/');
+  toggleMenu();
+};
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
@@ -32,10 +39,7 @@ function exportarPDF(){
   router.push('/crearPDF');
   toggleMenu();
 }
-function logout() {
-  router.push('/');
-  toggleMenu();
-}
+
 function estudiantes() {
   router.push('/estudiantes');
   toggleMenu();
@@ -252,7 +256,7 @@ const handleDataImported = async (data) => {
         
         <div class="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2 ">
           <form action="#">
-            <button type="submit" @click.prevent="logout"
+            <button type="submit" @click.prevent="handleLogout"
               class="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-[#b197ff] hover:bg-[#D] hover:text-gray-700">
               <svg xmlns="http://www.w3.org/2000/svg" class="size-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
