@@ -1,58 +1,48 @@
-import { getProfesores } from './useDatabase'; // Cambia la ruta según la ubicación de tu módulo
+import { getProfesores } from './useDatabase';
 
-// Cargar datos de los profesores desde la base de datos de Turso
 let listItem = [];
-if (!localStorage.getItem("listaDocumentoRegistros")) {
-    localStorage.setItem("listaDocumentoRegistros", JSON.stringify([]));
-  }
-localStorage.setItem("crearPDF", false);
 
 async function loadProfesores() {
     try {
-        const { fetchProfesores } = getProfesores(); // Obtener la función para cargar profesores
-        const result = await fetchProfesores(); // Ejecutar la consulta
-        listItem = result.rows; // Asignar los datos a listItem
+        const { fetchProfesores } = getProfesores();
+        const result = await fetchProfesores();
+        listItem = result.rows;
         console.log('Datos cargados:', listItem);
     } catch (error) {
         console.error('Error al cargar profesores:', error);
     }
 }
 
-// Función de login para validar usuario y contraseña
+// Función para establecer la cookie
+function setSessionCookie(idProfesor) {
+    const token = btoa(`${idProfesor}-${Date.now()}`);
+    document.cookie = `sessionToken=${token}; path=/; secure; SameSite=Strict`;
+    console.log('Cookie creada:', document.cookie);
+}
+
 export async function login(userName, userPwd) {
-    if (!userName || userName.trim() === "") {
-        throw new Error('No se ha proporcionado un nombre de usuario');
+    console.log(`Intentando login con: ${userName} / ${userPwd}`);
+
+    if (!userName || !userPwd) {
+        throw new Error('Usuario y contraseña son obligatorios');
     }
 
-    if (!userPwd || userPwd.trim() === "") {
-        throw new Error('No se ha proporcionado una contraseña');
-    }
-
-    // Asegurarse de que los datos de los profesores estén cargados
     if (listItem.length === 0) {
         await loadProfesores();
     }
 
-    let isValidUser = false;
+    const profesor = listItem.find(p => p.nombre === userName && p.contrasena === userPwd);
 
-    for (let i = 0; i < listItem.length; i++) {
-        const profesor = listItem[i];
-        if (!profesor || !profesor.nombre || !profesor.contrasena) {
-            console.error(`Error: datos incompletos en el elemento ${i}`);
-            continue;
-        }
-
-        // Comprobar si el nombre de usuario y la contraseña coinciden
-        if (profesor.nombre === userName && profesor.contrasena === userPwd) {
-            isValidUser = true;
-            localStorage.setItem('idProfesor', profesor.id_profesor);
-            break;
-        }
+    if (!profesor) {
+        throw new Error('Usuario o contraseña incorrectos.');
     }
 
-    if (!isValidUser) {
-        throw new Error("Usuario o contraseña incorrectos.");
-    }
+    setSessionCookie(profesor.id_profesor);
+    console.log('Login exitoso');
+    return { success: true };
+}
 
-    return { success: true, message: "Login exitoso" };
+export function logout() {
+    document.cookie = 'sessionToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict';
+    console.log('Sesión cerrada');
 }
