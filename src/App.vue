@@ -17,7 +17,7 @@ const shouldShowSideMenu = computed(() => {
     <SideMenu v-if="shouldShowSideMenu" class="fixed" />
 
     <!-- Main Content -->
-    <div class="Content">
+    <div class="Content invisible-scrollbar">
       <RouterView />
     </div>
   </div>
@@ -38,5 +38,8 @@ const shouldShowSideMenu = computed(() => {
 .Content {
   padding: 16px; /* Espaciado para el contenido principal */
   overflow-y: auto; /* Habilita scroll si el contenido es grande */
+}
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 </style>
