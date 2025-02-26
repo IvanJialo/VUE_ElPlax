@@ -15,9 +15,9 @@ function handleFilter(value) {
   filterText.value = value;
 }
 
-// Propiedad computada para filtrar estudiantes
+// Propiedad computada para filtrar empresas
 const filteredEmpresas = computed(() => {
-  if (!filterText.value) return empresas.value; // Si no hay filtro, devuelve todos los estudiantes
+  if (!filterText.value) return empresas.value; // Si no hay filtro, devuelve todos las empresas
   return empresas.value.filter(empresa => {
     // Filtra por nombre
     return (
@@ -52,7 +52,7 @@ onMounted(async () => {
           <!-- Renderizar encabezado de empresas -->
           <TablesThead :empresa="true" />
 
-          <!-- Renderizar tabla de alumnos -->
+          <!-- Renderizar tabla de empresas -->
           <AllTable
             v-for="empresa in filteredEmpresas"
             :key="empresa.id_empresa"
