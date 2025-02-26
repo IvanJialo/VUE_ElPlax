@@ -122,21 +122,45 @@ async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, dire
   }
 }
 
-
-
 async function postInsertarEmpresas(nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, telefono_empresa, actividad_principal, otras_actividades, descripcion_breve, interesado_en, estado_actual, profesor) {
   try {
+    // Validación: Asegúrate de que el nombre no esté vacío
+    if (!nombre) {
+      throw new Error("El nombre de la empresa es obligatorio");
+    }
+
     const query = `
-        INSERT INTO empresas (nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, telefono_empresa, actividad_principal, otras_actividades, descripcion_breve, interesado_en, estado_actual, profesor) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `;
-    const values = [nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, telefono_empresa, actividad_principal, otras_actividades, descripcion_breve, interesado_en, estado_actual, profesor];
+      INSERT INTO empresas (
+        nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal,
+        provincia, telefono_empresa, actividad_principal, otras_actividades,
+        descripcion_breve, interesado_en, estado_actual, profesor
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    const values = [
+      nombre,
+      nombre_oficial || null,
+      direccion_sede_central || null,
+      poblacion || null,
+      codigo_postal || null,
+      provincia || null,
+      telefono_empresa || null,
+      actividad_principal || null,
+      otras_actividades || null,
+      descripcion_breve || null,
+      interesado_en || null,
+      estado_actual || null,
+      profesor || null
+    ];
+
     const result = await turso.execute(query, values); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
   } catch (error) {
-    console.error('Error al insertar empresas:', error); // Muestra errores en la consola
+    console.error('Error al insertar empresas:', error.message); // Muestra errores en la consola
+    throw error; // Re-lanzar el error para que pueda ser manejado por el llamador
   }
 }
+
 
 async function postInsertarContactos(id_empresa, nombre, email, telefono) {
   try {
