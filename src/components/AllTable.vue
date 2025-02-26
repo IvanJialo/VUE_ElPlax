@@ -36,7 +36,6 @@ const nombreEstudiante = ref('Cargando...');
 const nombreEmpresa = ref('Cargando...');
 const nombreProfesor = ref('Cargando...');
 const crearPDF = ref(false);
-const nombresProfesores = ref([]);
 
 onMounted(async () => {
   try {
@@ -90,7 +89,9 @@ onMounted(async () => {
   const { fetchEmpresas } = getEmpresas();
   const empresas = await fetchEmpresas();
   
-  nombresProfesores.value = await obtenerNombreProfesor(props.empresa.profesor);
+  if(props.empresa?.profesor){
+    nombreProfesor.value = await obtenerNombreProfesor(props.empresa.profesor);
+  }
     
   
   // for (const empresa of empresas.rows) {
@@ -252,7 +253,7 @@ function eliminarEmpresa(id) {
           <td class="px-4 py-3 text-gray-700">{{ empresa.descripcion_breve }}</td>
           <td class="px-4 py-3 text-gray-700">{{ empresa.interesado_en }}</td>
           <td class="px-4 py-3 text-gray-700">{{ empresa.estado_actual }}</td>
-          <td class="px-4 py-3 text-gray-700">{{ nombresProfesores }}</td>
+          <td class="px-4 py-3 text-gray-700">{{ nombreProfesor }}</td>
           
           <td class="px-4 py-3 flex justify-center gap-2">
             <button 
@@ -349,7 +350,7 @@ function eliminarEmpresa(id) {
     </tr>
   </tbody>
 
-  <tbody class="divide-y divide-gray-200" v-if="clase && !empresa && !estudiante && !asignacion && !registro && !crearPDF">
+  <tbody class="divide-y divide-gray-200" v-if="clase">
     <tr class="hover:bg-gray-50 transition-colors">
       <td class="px-4 py-3 text-gray-900 font-medium">{{ clase.id_clase }}</td>
       <td class="px-4 py-3 text-gray-700">{{ clase.nombre_clase }}</td>
