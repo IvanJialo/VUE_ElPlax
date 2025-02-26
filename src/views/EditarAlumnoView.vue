@@ -81,7 +81,7 @@ const guardarEstudiante = async () => {
   <section class="max-h-screen flex items-center">
     <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-center font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#DCD0FF] via-purple-500 to-[#b197ff] sm:text-3xl mb-6">
-        {{ esEdicion ? "Editar Alumno" : "Crear Alumno" }}
+        {{ esEdicion ? "Editar Estudiante" : "Crear Estudiante" }}
       </h2>
 
       <div class="mx-auto max-w-lg">
@@ -144,7 +144,7 @@ const guardarEstudiante = async () => {
           </div>
 
           <button type="submit" class="block w-full rounded-lg bg-gradient-to-r from-[#b197ff] via-purple-500 to-[#b197ff] px-5 py-3 mt-4 text-sm font-medium text-white shadow-sm hover:opacity-90">
-            {{ esEdicion ? "Actualizar Alumno" : "Registrar Alumno" }}
+            {{ esEdicion ? "Actualizar Estudiante" : "Registrar Estudiante" }}
           </button>
 
           <p v-if="mensaje" class="mt-4 text-center text-sm font-medium" :class="mensaje.includes('error') ? 'text-red-500' : 'text-green-500'">

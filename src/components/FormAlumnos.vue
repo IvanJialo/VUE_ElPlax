@@ -129,7 +129,7 @@ const limpiarFormulario = () => {
 
           <!-- Botón de Enviar -->
           <button type="submit" class="block w-full rounded-lg bg-gradient-to-r from-[#b197ff] via-purple-500 to-[#b197ff] px-5 py-3 mt-4 text-sm font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-400">
-            Registrar Alumno
+            Registrar Estudiante
           </button>
 
           <!-- Mensaje de éxito o error -->
