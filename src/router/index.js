@@ -14,6 +14,7 @@ import crearRegistro from '../views/CrearRegistroView.vue'
 import tablaDeRegistros from '../views/TablaRegistrosView.vue'
 import crearPDF from '../views/CrearPDFView.vue'
 import tablaClases from '../views/TablaClasesView.vue'
+import importarCSV from '../views/ImportExportView.vue'
 
 // Función para verificar autenticación
 function isAuthenticated() {
@@ -112,6 +113,12 @@ const router = createRouter({
       component: crearPDF,
       meta: { requiresAuth: true },
     },
+    {
+      path: '/importarCSV',
+      name: 'importarCSV',
+      component: importarCSV,
+      meta: { requiresAuth: true },
+    }
   ],
 })
 
