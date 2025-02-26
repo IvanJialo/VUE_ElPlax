@@ -29,13 +29,13 @@ const alumnosFiltrados = computed(() => {
 
 const empresasFiltradas = computed(() => {
   return empresas.value.filter(empresa =>
-    empresa.nombre_empresa.toLowerCase().includes(busquedaEmpresa.value.toLowerCase())
+    empresa.nombre.toLowerCase().includes(busquedaEmpresa.value.toLowerCase())
   );
 });
 
 const asignarPracticas = async () => {
   const estudiante = alumnos.value.find(alumno => `${alumno.nombre} ${alumno.apellido}` === busquedaAlumno.value);
-  const empresa = empresas.value.find(empresa => empresa.nombre_empresa === busquedaEmpresa.value);
+  const empresa = empresas.value.find(empresa => empresa.nombre === busquedaEmpresa.value);
 
   if (!estudiante || !empresa || !fechaAsignacion.value || !fechaFinalizacion.value) {
     alert("Todos los campos son obligatorios");
@@ -85,9 +85,9 @@ const asignarPracticas = async () => {
                 class="w-full rounded-lg border-gray-200 focus:border-purple-500 p-3 text-sm shadow-sm" placeholder="Buscar empresa..." />
 
               <div v-show="showEmpresas && empresasFiltradas.length" class="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-auto">
-                <div v-for="empresa in empresasFiltradas" :key="empresa.id_empresa" @mousedown="busquedaEmpresa = empresa.nombre_empresa; showEmpresas = false"
+                <div v-for="empresa in empresasFiltradas" :key="empresa.id_empresa" @mousedown="busquedaEmpresa = empresa.nombre; showEmpresas = false"
                   class="p-3 hover:bg-gray-50 cursor-pointer text-sm">
-                  {{ empresa.nombre_empresa }}
+                  {{ empresa.nombre }}
                 </div>
               </div>
             </div>
