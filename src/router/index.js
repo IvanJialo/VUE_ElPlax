@@ -16,6 +16,7 @@ import crearPDF from '../views/CrearPDFView.vue'
 import tablaClases from '../views/TablaClasesView.vue'
 import importarCSV from '../views/ImportExportView.vue'
 import editarClase from '../views/EditarClaseView.vue'
+import editarAsignacion from '../views/EditarAsignacionView.vue'
 
 // Función para verificar autenticación
 function isAuthenticated() {
@@ -52,6 +53,12 @@ const router = createRouter({
       path: '/editarAlumno',
       name: 'editarAlumno',
       component: editarAlumno,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/editarAsignacion',
+      name: 'editarAsignacion',
+      component: editarAsignacion,
       meta: { requiresAuth: true },
     },
     {
