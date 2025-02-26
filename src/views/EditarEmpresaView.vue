@@ -52,7 +52,6 @@ onMounted(async () => {
       console.error("Error al cargar empresa:", error);
     }
   }
-
   const { fetchProfesores } = getProfesores();
   const result = await fetchProfesores();
   if (result) {
