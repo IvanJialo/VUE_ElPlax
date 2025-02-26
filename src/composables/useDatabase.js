@@ -228,13 +228,21 @@ async function deleteEstudianteId(id) {
     console.error('Error al eliminar estudiantes:', error); // Muestra errores en la consola
   }
 }
-
 async function deleteClaseId(id) {
   try {
     const result = await turso.execute('DELETE FROM clases WHERE id_clase = ?', [id]); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
   } catch (error) {
     console.error('Error al eliminar clases:', error); // Muestra errores en la consola
+  }
+}
+
+async function deleteAsignacionId(id) {
+  try {
+    const result = await turso.execute('DELETE FROM asignaciones WHERE id_asignacion = ?', [id]); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al eliminar asignaciones:', error); // Muestra errores en la consola
   }
 }
 
@@ -404,5 +412,6 @@ export {
   postInsertarClases,
   putClaseId,
   getClaseID,
-  deleteClaseId
+  deleteClaseId,
+  deleteAsignacionId
 }

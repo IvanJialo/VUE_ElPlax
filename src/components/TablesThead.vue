@@ -79,6 +79,7 @@ defineProps({
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Empresa</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Inicio</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Fin</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Acciones</th>
         </tr>
       </thead>
 
