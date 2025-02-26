@@ -14,6 +14,7 @@ import crearRegistro from '../views/CrearRegistroView.vue'
 import tablaDeRegistros from '../views/TablaRegistrosView.vue'
 import crearPDF from '../views/CrearPDFView.vue'
 import tablaClases from '../views/TablaClasesView.vue'
+import editarClase from '../views/EditarClaseView.vue'
 
 // Función para verificar autenticación
 function isAuthenticated() {
@@ -50,6 +51,12 @@ const router = createRouter({
       path: '/editarAlumno',
       name: 'editarAlumno',
       component: editarAlumno,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/editarClase',
+      name: 'editarClase',
+      component: editarClase,
       meta: { requiresAuth: true },
     },
     {

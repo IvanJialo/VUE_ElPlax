@@ -62,6 +62,19 @@ async function getProfesoresID(id) {
   }
 }
 
+function getClaseID(id) {
+  const fetchClaseID = async () => {
+    try {
+      const result = await turso.execute('SELECT * FROM clases WHERE id_clase = ?', [id]); // Ejecuta la consulta
+      console.log(result.rows); // Muestra los datos en la consola
+      return result;
+    } catch (error) {
+      console.error('Error al obtener clases:', error); // Muestra errores en la consola
+    }
+  };
+  return { fetchClaseID };
+}
+
 function getEmpresas() {
   const fetchEmpresas = async () => {
     try {
@@ -216,6 +229,15 @@ async function deleteEstudianteId(id) {
   }
 }
 
+async function deleteClaseId(id) {
+  try {
+    const result = await turso.execute('DELETE FROM clases WHERE id_clase = ?', [id]); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al eliminar clases:', error); // Muestra errores en la consola
+  }
+}
+
 async function deleteEmpresaId(id) {
   try {
     const result = await turso.execute('DELETE FROM empresas WHERE id_empresa = ?', [id]); // Ejecuta la consulta
@@ -256,6 +278,22 @@ async function putEmpresaId(id, nombre, nombre_oficial, direccion_sede_central, 
     console.log(result.rows); // Muestra los datos en la consola
   } catch (error) {
     console.error('Error al actualizar empresas:', error); // Muestra errores en la consola
+  }
+}
+
+async function putClaseId(id, nombre_clase, id_profesor) {
+  try {
+    const query = `
+        UPDATE clases 
+        SET nombre_clase = ?, id_profesor = ? 
+        WHERE id_clase = ?
+        `;
+    const values = [nombre_clase, id_profesor, id];
+
+    const result = await turso.execute(query, values); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al actualizar clases:', error); // Muestra errores en la consola
   }
 }
 
@@ -363,5 +401,8 @@ export {
   postInsertarRegistros,
   getRegistrosID,
   getProfesoresID,
-  postInsertarClases
+  postInsertarClases,
+  putClaseId,
+  getClaseID,
+  deleteClaseId
 }

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, defineProps, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { deleteEstudianteId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas, getRegistros, getProfesores } from '../composables/useDatabase';
+import { deleteEstudianteId, deleteClaseId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas, getRegistros, getProfesores } from '../composables/useDatabase';
 import { getListaDocumentoRegistros } from '../composables/usePDF';
 
 const router = useRouter();
@@ -189,6 +189,7 @@ function eliminarClase(id) {
     router.push('/clases');
   }
 }
+
 function eliminarEmpresa(id) {
   if (confirm('¿Estás seguro de eliminar esta empresa?')) {
     deleteEmpresaId(id);
