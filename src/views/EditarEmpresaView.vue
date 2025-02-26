@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { getEmpresasID, putEmpresaId, getProfesores } from "../composables/useDatabase";
+import { getEmpresasID, putEmpresaId, getProfesores, getProfesoresID } from "../composables/useDatabase";
 
 const idEmpresa = localStorage.getItem('idEmpresa');
 
@@ -17,15 +17,21 @@ const form = ref({
   descripcion_breve: "",
   interesado_en: "",
   estado_actual: "",
-  id_profesor: "",
+  id_profesor: null,
 });
 
 const mensaje = ref(""); // Mensaje de éxito o error
 const esEdicion = computed(() => !!idEmpresa); // Detecta si estamos en edición
 const profesores = ref([]);
 
-
 onMounted(async () => {
+  // Cargar profesores
+  const { fetchProfesores } = getProfesores();
+  const resultProfesores = await fetchProfesores();
+  if (resultProfesores && resultProfesores.rows) {
+    profesores.value = resultProfesores.rows;
+  }
+
   if (esEdicion.value) {
     try {
       const { fetchEmpresasID } = getEmpresasID(idEmpresa);
@@ -52,11 +58,6 @@ onMounted(async () => {
       console.error("Error al cargar empresa:", error);
     }
   }
-  const { fetchProfesores } = getProfesores();
-  const result = await fetchProfesores();
-  if (result) {
-    profesores.value = result.rows;
-  }
 });
 
 const guardarEmpresa = async () => {
@@ -90,7 +91,7 @@ const guardarEmpresa = async () => {
 </script>
 
 <template>
-  <section class="max-h-screen mt-28 mb-32 flex items-center">
+  <section class="max-h-screen mt-32 mb-32 flex items-center">
     <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
       <h2 class="text-center font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#DCD0FF] via-purple-500 to-[#b197ff] sm:text-3xl mb-6">
         {{ esEdicion ? "Editar Empresa" : "Crear Empresa" }}
@@ -177,15 +178,15 @@ const guardarEmpresa = async () => {
                   <option value="En Proceso">En Proceso</option>
                   <option value="Disponible">Disponible</option>
                   <option value="No disponible temporal">No disponible temporal</option>
-                  <option value="No disponible Permanente">No disponible Permanente</option>
+                  <option value="No disponible Permanente">No disponible permanente</option>
                 </select>
               </div>
 
               <div>
                 <label for="id_profesor" class="block text-sm font-medium text-gray-700">Profesor Asociado</label>
                 <select v-model="form.id_profesor" id="id_profesor" class="w-full rounded-lg border-gray-200 focus:border-purple-500 focus:ring-purple-500 p-3 text-sm shadow-sm">
-                  <option value="">Seleccione un profesor</option>
-                  <option v-for="profesor in profesores" :key="profesor.id_profesor" :value="profesor.id_profesor">
+                  <option v-if="!form.id_profesor" value="">Seleccione un profesor</option>
+                  <option v-for="profesor in profesores" :key="profesor.id_profesor" :value="profesor.id_profesor" :selected="profesor.id_profesor === form.id_profesor">
                     {{ profesor.nombre }}
                   </option>
                 </select>

@@ -196,7 +196,7 @@ const limpiarFormulario = () => {
                   <option value="En Proceso">En Proceso</option>
                   <option value="Disponible">Disponible</option>
                   <option value="No disponible temporal">No disponible temporal</option>
-                  <option value="No disponible Permanente">No disponible Permanente</option>
+                  <option value="No disponible Permanente">No disponible permanente</option>
                 </select>
               </div>
 
