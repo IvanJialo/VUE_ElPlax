@@ -103,11 +103,17 @@ async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, dire
   try {
     const tieneVehiculo = vehiculo ? 1 : 0; // Convertimos el boolean a un valor 1 o 0
 
+    // Verificar si el curso está definido, si no, establecer id_clase a "No asignado"
+    const idClase = curso ? curso : null;
+
+    // Verificar si el email está definido, si no, establecer email a NULL
+    const emailValue = email ? email : null;
+
     const query = `
-        INSERT INTO estudiantes (dni, nombre, apellido, id_clase, fecha_nacimiento, direccion, email, telefono, tiene_vehiculo) 
+        INSERT INTO estudiantes (dni, nombre, apellido, id_clase, fecha_nacimiento, direccion, email, telefono, tiene_vehiculo)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         `;
-    const values = [dni, nombre, apellido, curso, fecha, direccion, email, telefono, tieneVehiculo];
+    const values = [dni, nombre, apellido, idClase, fecha, direccion, emailValue, telefono, tieneVehiculo];
 
     const result = await turso.execute(query, values); // Ejecuta la consulta
     console.log(result.rows); // Muestra los datos en la consola
@@ -115,6 +121,8 @@ async function postInsertarEstudiantes(dni, nombre, apellido, curso, fecha, dire
     console.error('Error al insertar estudiantes:', error); // Muestra errores en la consola
   }
 }
+
+
 
 async function postInsertarEmpresas(nombre, nombre_oficial, direccion_sede_central, poblacion, codigo_postal, provincia, telefono_empresa, actividad_principal, otras_actividades, descripcion_breve, interesado_en, estado_actual, profesor) {
   try {
