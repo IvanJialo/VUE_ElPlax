@@ -9,9 +9,11 @@ import tablaAsignaciones from '../views/TablaAsignacionesView.vue'
 import crearAlumno from '../views/CrearAlumnoView.vue'
 import crearEmpresa from '../views/CrearEmpresaView.vue'
 import crearAsignacion from '../views/CrearAsignacionView.vue'
+import crearClases from '../views/CrearClasesView.vue'
 import crearRegistro from '../views/CrearRegistroView.vue'
 import tablaDeRegistros from '../views/TablaRegistrosView.vue'
 import crearPDF from '../views/CrearPDFView.vue'
+import tablaClases from '../views/TablaClasesView.vue'
 
 // Función para verificar autenticación
 function isAuthenticated() {
@@ -51,6 +53,12 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/crearClases',
+      name: 'crearClases',
+      component: crearClases,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/editarEmpresa',
       name: 'editarEmpresa',
       component: editarEmpresa,
@@ -66,6 +74,12 @@ const router = createRouter({
       path: '/crearAlumno',
       name: 'crearAlumno',
       component: crearAlumno,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/clases',
+      name: 'clases',
+      component: tablaClases,
       meta: { requiresAuth: true },
     },
     {

@@ -23,6 +23,10 @@ defineProps({
     type: Boolean,
     default: false, // Valor por defecto
   },
+  clase: {
+    type: Boolean,
+    default: false, // Valor por defecto
+  },
 });
 </script>
 
@@ -104,6 +108,16 @@ defineProps({
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Reunión</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Observaciones</th> 
           <td class="px-4 py-3 text-center font-semibold text-gray-700">PDF</td>
+        </tr>
+      </thead>
+
+      <!-- Cabecera para Clases -->
+      <thead class="bg-gray-100" v-if="clase && !empresa && !estudiante && !asignacion && !registro && !crearPDF">
+        <tr>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Nombre</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Profesor</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Acciones</th>
         </tr>
       </thead>
     <!-- </table> -->

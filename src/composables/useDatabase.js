@@ -192,6 +192,21 @@ async function postInsertarAsignaciones(id_estudiante, id_empresa, fecha_asignac
   }
 }
 
+async function postInsertarClases(nombre_clase, id_profesor){
+  try {
+    const query = `
+        INSERT INTO clases (nombre_clase, id_profesor) 
+        VALUES (?, ?)
+        `;
+    const values = [nombre_clase, id_profesor];
+
+    const result = await turso.execute(query, values); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al insertar clases:', error); // Muestra errores en la consola
+  }
+}
+
 async function deleteEstudianteId(id) {
   try {
     const result = await turso.execute('DELETE FROM estudiantes WHERE id_estudiante = ?', [id]); // Ejecuta la consulta
@@ -347,5 +362,6 @@ export {
   getRegistros,
   postInsertarRegistros,
   getRegistrosID,
-  getProfesoresID
+  getProfesoresID,
+  postInsertarClases
 }
