@@ -36,7 +36,7 @@ export async function login(userName, userPwd) {
     if (!profesor) {
         throw new Error('Usuario o contraseña incorrectos.');
     }
-
+    localStorage.setItem('idProfesor', profesor.id_profesor);
     setSessionCookie(profesor.id_profesor);
     console.log('Login exitoso');
     return { success: true };
