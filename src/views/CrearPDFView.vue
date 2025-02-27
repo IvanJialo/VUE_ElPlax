@@ -1,33 +1,63 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 import AllTable from "../components/AllTable.vue";
 import TablesThead from "../components/TablesThead.vue";
-import { getRegistros, getRegistrosID, getEmpresas, getProfesoresID } from "../composables/useDatabase";
+import { getRegistros, getRegistrosID, getEmpresas, getProfesores, getProfesoresID } from "../composables/useDatabase";
 import { getListaDocumentoRegistros } from '../composables/usePDF';
+import FilterInput from '../components/FilterInput.vue'; // Importar el componente de filtro
 
 // Estados reactivos
-const registros = ref([]);  
+const registros = ref([]);
+const empresas = ref([]);
+const profesores = ref([]);
 const error = ref(null);
 const txtDocumentPDF = ref('');
 const lista = ref([]);
 const crearPDF = ref(false);
-// Cargar registros al montar el componente
+const filterText = ref(''); // Estado para el filtro
+
+// Función para manejar el filtro
+function handleFilter(value) {
+  filterText.value = value;
+}
+
+// Propiedad computada para filtrar registros
+const filteredRegistros = computed(() => {
+  if (!filterText.value) return registros.value; // Si no hay filtro, devuelve todos los registros
+
+  const searchTerm = filterText.value.toLowerCase();
+  return registros.value.filter(registro => {
+    const nombreEmpresa = empresas.value.find(e => e.id_empresa === registro.id_empresa)?.nombre || 'Desconocido';
+    const nombreProfesor = profesores.value.find(p => p.id_profesor === registro.id_profesor)?.nombre || 'Desconocido';
+    return (
+      nombreEmpresa.toLowerCase().includes(searchTerm) ||
+      nombreProfesor.toLowerCase().includes(searchTerm)
+    );
+  });
+});
+
+// Cargar registros, empresas y profesores al montar el componente
 onMounted(async () => {
-    try {
+  try {
     await new Promise((resolve) => {
       setTimeout(() => {
         resolve(localStorage.setItem('crearPDF', true));
       }, 100); // Simulando posible retraso
     });
-} catch (err) {
-    error.value = "Hubo un error al cargar los datos.";
-    console.error(err);
-}
 
+    // Cargar empresas
+    const { fetchEmpresas } = getEmpresas();
+    const empresasData = await fetchEmpresas();
+    empresas.value = empresasData.rows || [];
 
-  try {
+    // Cargar profesores
+    const { fetchProfesores } = getProfesores();
+    const profesoresData = await fetchProfesores();
+    profesores.value = profesoresData.rows || [];
+
+    // Cargar registros
     const { fetchRegistros } = getRegistros();
     const data = await fetchRegistros();
     registros.value = data.rows || [];
@@ -71,16 +101,15 @@ async function botonCrearPDF() {
       return null; // Devuelve null si no hay datos
     }
     return result.rows[0]; // Extrae la primera fila de datos
-}));
+  }));
 
-// Filtra los elementos nulos para evitar problemas en la tabla
-const filteredArray = array.filter(row => row !== null);
+  // Filtra los elementos nulos para evitar problemas en la tabla
+  const filteredArray = array.filter(row => row !== null);
 
   console.log("Datos cargados para el PDF:", array); // Verifica que los datos están llegando correctamente
 
   const doc = new jsPDF("landscape");
   doc.setFontSize(16);
-  //haz esto con una promesa: doc.text(`Listado de registros hecho por ${getProfesoresID(idProfesor)}`, 14, 20);
   const profesor = await getProfesoresID(idProfesor);
   doc.text(`Listado de registros hecho por ${profesor?.rows?.[0]?.nombre}`, 14, 20);
   doc.setFontSize(12);
@@ -90,24 +119,24 @@ const filteredArray = array.filter(row => row !== null);
   // Transformamos los datos para que se incluyan en la tabla correctamente
   const bodyData = await Promise.all(filteredArray.map(async (row) => {
     const [empresaResult, profesorResult] = await Promise.all([
-        obtenerNombreEmpresa(row.id_empresa),
-        getProfesoresID(row.id_profesor),
+      obtenerNombreEmpresa(row.id_empresa),
+      getProfesoresID(row.id_profesor),
     ]);
 
     // Asegurar que los resultados tienen datos válidos
     const profesor = profesorResult?.rows?.[0]?.nombre || "-";
 
     return [
-        row.id_registros,
-        row.fecha_asignacion || "-",
-        empresaResult,
-        profesor,
-        row.llamada_registrada ? "Si" : "No",
-        row.correo_registrado ? "Si" : "No",
-        row.reunion_registrada ? "Si" : "No",
-        row.observacion || "-",
+      row.id_registros,
+      row.fecha_asignacion || "-",
+      empresaResult,
+      profesor,
+      row.llamada_registrada ? "Si" : "No",
+      row.correo_registrado ? "Si" : "No",
+      row.reunion_registrada ? "Si" : "No",
+      row.observacion || "-",
     ];
-}));
+  }));
 
   doc.autoTable({
     startY: 45,
@@ -135,14 +164,10 @@ const filteredArray = array.filter(row => row !== null);
     ],
     body: bodyData, // Se pasa el array completo con todas las filas
     horizontalPageBreak: true
-
   });
 
   doc.save("Listado_Registros.pdf");
 }
-
-
-
 </script>
 
 <template>
@@ -164,14 +189,18 @@ const filteredArray = array.filter(row => row !== null);
           <button @click="botonCrearPDF" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Crear PDF</button>
         </div>
       </div>
+
+      <!-- Componente de filtro -->
+      <FilterInput @filter="handleFilter" placeholder="Buscar por empresa o profesor..." />
+
       <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
         <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
           <!-- Renderizar encabezado de registros -->
           <TablesThead :crearPDF="true" />
-          
-          <!-- Renderizar tabla de registros -->
+
+          <!-- Renderizar tabla de registros filtrados -->
           <AllTable
-            v-for="registro in registros"
+            v-for="registro in filteredRegistros"
             :key="registro.id_registros"
             :registro="registro"
           />
