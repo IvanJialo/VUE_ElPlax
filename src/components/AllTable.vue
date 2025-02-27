@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, defineProps, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import { deleteEstudianteId, deleteClaseId, deleteAsignacionId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas, getRegistros, getProfesores } from '../composables/useDatabase';
+import { deleteEstudianteId, deleteClaseId,deleteProfesorId , deleteAsignacionId, deleteEmpresaId, getClases, getEstudiantes, getEmpresas, getRegistros, getProfesores } from '../composables/useDatabase';
 import { getListaDocumentoRegistros } from '../composables/usePDF';
 
 const router = useRouter();
@@ -24,6 +24,10 @@ const props = defineProps({
     required: false,
   },
   clase: {
+    type: Object,
+    required: false,
+  },
+  profesor: {
     type: Object,
     required: false,
   },
@@ -176,6 +180,16 @@ function eliminarAsignacion(id) {
   if (confirm('¿Estás seguro de eliminar esta asignación?')) {
     deleteAsignacionId(id);
     router.push('/asignaciones');
+  }
+}
+function editarProfesor(id) {
+  localStorage.setItem('idEditarProfesor', id);
+  router.push('/editarProfesor');
+}
+function eliminarProfesor(id) {
+  if (confirm('¿Estás seguro de eliminar este profesor?')) {
+    deleteProfesorId(id);
+    router.push('/profesores');
   }
 }
 
@@ -395,6 +409,36 @@ function eliminarEmpresa(id) {
         </button>
         <button 
           @click="eliminarClase(clase.id_clase)"
+          class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+          </svg>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+
+  <tbody class="divide-y divide-gray-200" v-if="profesor">
+    <tr class="hover:bg-gray-50 transition-colors">
+      <td class="px-4 py-3 text-gray-900 font-medium">{{ profesor.id_profesor }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ profesor.nombre }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ profesor.apellido }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ profesor.email }}</td>
+      <td class="px-4 py-3 text-gray-700">{{ profesor.fecha_nacimiento }}</td>
+      <td class="px-4 py-3 text-gray-700">{{"* Confidencial *"}}</td>
+      <td class="px-4 py-3 text-gray-700">{{ nombreDeClase(profesor.id_clase) }}</td>
+      <td class="px-4 py-3 flex justify-center gap-2">
+        <button 
+          @click="editarProfesor(profesor.id_profesor)"
+          class="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+          </svg>
+        </button>
+        <button 
+          @click="eliminarProfesor(profesor.id_profesor)"
           class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

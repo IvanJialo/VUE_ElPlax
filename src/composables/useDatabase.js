@@ -61,6 +61,18 @@ async function getProfesoresID(id) {
     console.error('Error al obtener profesores:', error); // Muestra errores en la consola
   }
 }
+function getProfesorID(id) {
+  const fetchProfesorID = async () => {
+    try {
+      const result = await turso.execute('SELECT * FROM profesores WHERE id_profesor = ?', [id]); // Ejecuta la consulta
+      console.log(result.rows); // Muestra los datos en la consola
+      return result;
+    } catch (error) {
+      console.error('Error al obtener profesores:', error); // Muestra errores en la consola
+    }
+  };
+  return { fetchProfesorID };
+}
 
 function getClaseID(id) {
   const fetchClaseID = async () => {
@@ -267,6 +279,15 @@ async function deleteEmpresaId(id) {
   }
 }
 
+async function deleteProfesorId(id) {
+  try {
+    const result = await turso.execute('DELETE FROM profesores WHERE id_profesor = ?', [id]); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al eliminar profesores:', error); // Muestra errores en la consola
+  }
+}
+
 async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
   try {
     const tieneVehiculo = vehiculo ? 1 : 0; // Convertimos el boolean a un valor 1 o 0
@@ -282,6 +303,21 @@ async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccio
     console.log(result.rows); // Muestra los datos en la consola
   } catch (error) {
     console.error('Error al actualizar estudiantes:', error); // Muestra errores en la consola
+  }
+}
+async function putProfesorId(id, nombre, apellido, email, fecha_nacimiento, contrasena, id_clase) {
+  try {
+    const query = `
+        UPDATE profesores
+        SET nombre = ?, apellido = ?, email = ?, fecha_nacimiento = ?, contrasena = ?, id_clase = ?
+        WHERE id_profesor = ?
+        `;
+    const values = [nombre, apellido, email, fecha_nacimiento, contrasena, id_clase, id];
+
+    const result = await turso.execute(query, values); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al actualizar profesores:', error); // Muestra errores en la consola
   }
 }
 
@@ -458,5 +494,8 @@ export {
   deleteAsignacionId,
   getAsignacionesID,
   putAsignacionId,
-  postInsertarProfesores
+  postInsertarProfesores,
+  deleteProfesorId,
+  putProfesorId,
+  getProfesorID
 }
