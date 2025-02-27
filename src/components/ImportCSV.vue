@@ -1,13 +1,85 @@
-<!-- ImportCSVButton.vue -->
+<!-- ImportCSV.vue -->
 <template>
-  <RouterLink to="/importarCSV"
-    class="flex items-center gap-2 px-4 py- text-gray-400 rounded-lg transition-all">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-      <path fill="#b197ff"
-        d="m8.84 12l-4.92 4.92L2.5 15.5L5 13H0v-2h5L2.5 8.5l1.42-1.42zM12 3C8.59 3 5.68 4.07 4.53 5.57L5 6l1.03 1.07C6 7.05 6 7 6 7c0-.5 2.13-2 6-2s6 1.5 6 2s-2.13 2-6 2c-2.62 0-4.42-.69-5.32-1.28l3.12 3.12c.7.1 1.44.16 2.2.16c2.39 0 4.53-.53 6-1.36v2.81c-1.3.95-3.58 1.55-6 1.55c-.96 0-1.9-.1-2.76-.27l-1.65 1.64c1.32.4 2.82.63 4.41.63c2.28 0 4.39-.45 6-1.23V17c0 .5-2.13 2-6 2s-6-1.5-6-2v-.04L5 18l-.46.43C5.69 19.93 8.6 21 12 21c4.41 0 8-1.79 8-4V7c0-2.21-3.58-4-8-4" />
-    </svg>
-  </RouterLink>
+  <label
+    for="file-upload"
+    class="cursor-pointer text-center align-items-center w-[300px] rounded-lg bg-gradient-to-r from-[#b197ff] via-purple-500 to-[#b197ff] px-5 py-3 mt-4 text-sm font-medium text-white shadow-sm hover:opacity-90"
+  >
+    Importar Datos
+    <input
+      id="file-upload"
+      type="file"
+      accept=".csv"
+      class="hidden"
+      @change="handleFileUpload"
+    />
+  </label>
+  <ModalConfirmation
+    :isOpen="isModalOpen"
+    title="Importación Completada"
+    message="Los datos se han importado correctamente."
+    @close="closeModal"
+  />
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import Papa from 'papaparse';
+import ModalConfirmation from './ModalConfirmation.vue';
+
+const emit = defineEmits(['data-imported']);
+const isModalOpen = ref(false);
+
+const handleFileUpload = (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  Papa.parse(file, {
+    header: true,
+    dynamicTyping: true,
+    skipEmptyLines: true,
+    complete: (results) => {
+      if (results.errors.length > 0) {
+        console.error('Error al leer el archivo CSV', results.errors);
+        return;
+      }
+
+      // Validar y mapear los datos
+      const empresas = results.data.map(row => {
+        // Verificar que la fila tenga 13 campos
+        if (Object.keys(row).length !== 13) {
+          console.warn(`Fila inválida: ${JSON.stringify(row)}`);
+          return null;
+        }
+
+        // Mapear los campos correctamente
+        return {
+          nombre: row.nombre,
+          nombre_oficial: row.nombre_oficial,
+          direccion_sede_central: row.direccion_sede_central,
+          poblacion: row.poblacion,
+          codigo_postal: row.codigo_postal,
+          provincia: row.provincia,
+          telefono_empresa: row.telefono_empresa,
+          actividad_principal: row.actividad_principal,
+          otras_actividades: row.otras_actividades,
+          descripcion_breve: row.descripcion_breve,
+          interesado_en: row.interesado_en,
+          estado_actual: row.estado_actual,
+          id_profesor: parseInt(row.id_profesor, 10) || null, // Asegurar que sea un número
+        };
+      }).filter(row => row !== null); // Filtrar filas inválidas
+
+      // Emitir los datos procesados
+      emit('data-imported', { empresas });
+      isModalOpen.value = true; // Abrir modal de confirmación
+    },
+    error: (err) => {
+      console.error('Error al leer el archivo CSV', err);
+    },
+  });
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+  };
 </script>

@@ -307,29 +307,28 @@ async function putClaseId(id, nombre_clase, id_profesor) {
 
 async function exportCSV() {
   try {
-    const estudiantes = await getEstudiantes().fetchEstudiantes();
+    // Obtener datos de empresas
     const empresas = await getEmpresas().fetchEmpresas();
-    // const contactos = await getContactos().fetchContactos(); // Asegúrate de tener una función para obtener contactos
 
-    const data = [
-      { title: "Empresas", rows: empresas.rows },
-      // { title: "Contactos", rows: contactos.rows },
-      { title: "Estudiantes", rows: estudiantes.rows },
-    ];
+    // Filtrar el campo 'id_empresa' de los encabezados
+    const headers = Object.keys(empresas.rows[0]).filter(key => key !== 'id_empresa');
 
-    const csvContent = data
-      .map(
-        (section) =>
-          `title,${section.title}\n` +
-          Object.keys(section.rows[0]).filter(key => key !== 'id_estudiante').join(",") + "\n" + // Excluir el ID de estudiantes
-          section.rows.map((row) => 
-            Object.values(row)
-                  .filter((value, index) => index !== 0) // Excluir el primer valor (ID de estudiantes)
-                  .join(",")
-          ).join("\n")
+    // Generar el contenido del CSV
+    const csvContent = [
+      headers.join(","), // Encabezados
+      ...empresas.rows.map(row => 
+        headers.map(header => {
+          const value = row[header];
+          // Entrecomillar valores con comas o saltos de línea
+          if (typeof value === 'string' && (value.includes(',') || value.includes('\n'))) {
+            return `"${value}"`;
+          }
+          return value;
+        }).join(",")
       )
-      .join("\n\n");
+    ].join("\n");
 
+    // Crear y descargar el archivo CSV
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");

@@ -2,12 +2,11 @@
 import { ref } from 'vue';
 import { useRouter, RouterLink } from 'vue-router';
 import ExportData from '../components/ExportData.vue';
-import ImportCSV from '../components/ImportCSV.vue';
 import { logout } from '@/composables/login';
-import { exportCSV, postInsertarEmpresas, postInsertarContactos, postInsertarEstudiantes } from "@/composables/useDatabase";
+import { exportCSV } from "@/composables/useDatabase";
 import Swal from 'sweetalert2';
 
-  
+
 const exportarCSV = () => {
   exportCSV(); // Llama a la función para exportar datos
 };
@@ -35,7 +34,7 @@ function toggleMenu() {
   }
 }
 
-function exportarPDF(){
+function exportarPDF() {
   router.push('/crearPDF');
   toggleMenu();
 }
@@ -93,59 +92,6 @@ function registros() {
   router.push('/registros');
   toggleMenu();
 }
-
-const handleDataImported = async (data) => {
-  try {
-    if (data.empresas && data.empresas.length > 0) {
-      for (const empresa of data.empresas) {
-        await postInsertarEmpresas(
-          empresa.nombre,
-          empresa.nombre_oficial,
-          empresa.direccion_sede_central,
-          empresa.poblacion,
-          empresa.codigo_postal,
-          empresa.provincia,
-          empresa.telefono_empresa,
-          empresa.actividad_principal,
-          empresa.otras_actividades,
-          empresa.descripcion_breve,
-          empresa.interesado_en,
-          empresa.estado_actual,
-          empresa.id_profesor
-        );
-      }
-    }
-    if (data.contactos && data.contactos.length > 0) {
-      for (const contacto of data.contactos) {
-        await postInsertarContactos(
-          contacto.id_empresa,
-          contacto.nombre,
-          contacto.email,
-          contacto.telefono
-        );
-      }
-    }
-    if (data.estudiantes && data.estudiantes.length > 0) {
-      for (const estudiante of data.estudiantes) {
-        await postInsertarEstudiantes(
-          estudiante.dni,
-          estudiante.nombre,
-          estudiante.apellido,
-          estudiante.id_clase,
-          estudiante.fecha_nacimiento,
-          estudiante.direccion,
-          estudiante.email,
-          estudiante.telefono,
-          estudiante.tiene_vehiculo
-        );
-      }
-    }
-    console.log('Datos importados y guardados correctamente');
-  } catch (error) {
-    console.error('Error al importar datos:', error);
-  }
-};
-
 </script>
 
 <template>
@@ -164,7 +110,9 @@ const handleDataImported = async (data) => {
               <div class="py-4" @click="toggleMenu">
                 <a href="#" id="general-menu"
                   class="t group relative flex justify-center rounded px-2 py-1.5 text-[#b197ff]">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#b197ff" d="M3 18v-2h18v2zm0-5v-2h18v2zm0-5V6h18v2z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#b197ff" d="M3 18v-2h18v2zm0-5v-2h18v2zm0-5V6h18v2z" />
+                  </svg>
 
                   <span
                     class="text-nowrap invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
@@ -208,7 +156,7 @@ const handleDataImported = async (data) => {
                 </li>
 
                 <li>
-                  <RouterLink to="/crearEmpresa" 
+                  <RouterLink to="/crearEmpresa"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32">
                       <path fill="#b197ff" d="M8 8h2v4H8zm0 6h2v4H8zm6-6h2v4h-2zm0 6h2v4h-2zm-6 6h2v4H8zm6 0h2v4h-2z" />
@@ -248,20 +196,23 @@ const handleDataImported = async (data) => {
                   </a>
                 </li>
                 <li>
-                  <a href="#"
+                  <RouterLink to="/importarCSV"
                     class="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:bg-gray-50 hover:text-gray-700">
-                    <ImportCSV @data-imported="handleDataImported"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                      <path fill="#b197ff"
+                        d="m8.84 12l-4.92 4.92L2.5 15.5L5 13H0v-2h5L2.5 8.5l1.42-1.42zM12 3C8.59 3 5.68 4.07 4.53 5.57L5 6l1.03 1.07C6 7.05 6 7 6 7c0-.5 2.13-2 6-2s6 1.5 6 2s-2.13 2-6 2c-2.62 0-4.42-.69-5.32-1.28l3.12 3.12c.7.1 1.44.16 2.2.16c2.39 0 4.53-.53 6-1.36v2.81c-1.3.95-3.58 1.55-6 1.55c-.96 0-1.9-.1-2.76-.27l-1.65 1.64c1.32.4 2.82.63 4.41.63c2.28 0 4.39-.45 6-1.23V17c0 .5-2.13 2-6 2s-6-1.5-6-2v-.04L5 18l-.46.43C5.69 19.93 8.6 21 12 21c4.41 0 8-1.79 8-4V7c0-2.21-3.58-4-8-4" />
+                    </svg>
                     <span
                       class="text-nowrap invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
                       Importar CSV
                     </span>
-                  </a>
+                  </RouterLink>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        
+
         <div class="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2 ">
           <form action="#">
             <button type="submit" @click.prevent="handleLogout"
