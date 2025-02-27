@@ -316,6 +316,20 @@ async function putClaseId(id, nombre_clase, id_profesor) {
     console.error('Error al actualizar clases:', error); // Muestra errores en la consola
   }
 }
+async function postInsertarProfesores(nombre, apellido, email, fecha_nacimiento, contrasena, id_clase){
+  try {
+    const query = `
+        INSERT INTO profesores (nombre, apellido, email, fecha_nacimiento, contrasena, id_clase) 
+        VALUES (?, ?, ?, ?, ?, ?)
+        `;
+    const values = [nombre, apellido, email, fecha_nacimiento, contrasena, id_clase];
+
+    const result = await turso.execute(query, values); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al insertar profesores:', error); // Muestra errores en la consola
+  }
+}
 
 async function putAsignacionId(id, id_estudiante, id_empresa, fecha_asignacion, fecha_finalizacion) {
   try {
@@ -443,5 +457,6 @@ export {
   deleteClaseId,
   deleteAsignacionId,
   getAsignacionesID,
-  putAsignacionId
+  putAsignacionId,
+  postInsertarProfesores
 }

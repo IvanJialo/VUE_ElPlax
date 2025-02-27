@@ -17,6 +17,8 @@ import tablaClases from '../views/TablaClasesView.vue'
 import importarCSV from '../views/ImportExportView.vue'
 import editarClase from '../views/EditarClaseView.vue'
 import editarAsignacion from '../views/EditarAsignacionView.vue'
+import crearProfesor from '../views/CrearProfesorView.vue'
+import tablaProfesores from '../views/TablaProfesoresView.vue'
 
 // Función para verificar autenticación
 function isAuthenticated() {
@@ -47,6 +49,18 @@ const router = createRouter({
       path: '/empresas',
       name: 'empresas',
       component: tablaDeEmpresas,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/profesores',
+      name: 'profesores',
+      component: tablaProfesores,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/crearProfesor',
+      name: 'crearProfesor',
+      component: crearProfesor,
       meta: { requiresAuth: true },
     },
     {
