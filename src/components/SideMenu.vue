@@ -266,7 +266,7 @@ function registros() {
               </span>
             </button>
           </form>
-          <span class="-mb-2 -ml-1  block text-wrap text-xs text-gray-400">v0.1.1</span>
+          <span class="-mb-2 -ml-1  block text-wrap text-xs text-gray-400">v1.0.0</span>
         </div>
       </div>
 
