@@ -16,6 +16,10 @@ import crearPDF from '../views/CrearPDFView.vue'
 import tablaClases from '../views/TablaClasesView.vue'
 import importarCSV from '../views/ImportExportView.vue'
 import editarClase from '../views/EditarClaseView.vue'
+import editarAsignacion from '../views/EditarAsignacionView.vue'
+import crearProfesor from '../views/CrearProfesorView.vue'
+import tablaProfesores from '../views/TablaProfesoresView.vue'
+import editarProfesor from '../views/EditarProfesorView.vue'
 
 // Función para verificar autenticación
 function isAuthenticated() {
@@ -49,9 +53,33 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/profesores',
+      name: 'profesores',
+      component: tablaProfesores,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/editarProfesor',
+      name: 'editarProfesor',
+      component: editarProfesor,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/crearProfesor',
+      name: 'crearProfesor',
+      component: crearProfesor,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/editarAlumno',
       name: 'editarAlumno',
       component: editarAlumno,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/editarAsignacion',
+      name: 'editarAsignacion',
+      component: editarAsignacion,
       meta: { requiresAuth: true },
     },
     {

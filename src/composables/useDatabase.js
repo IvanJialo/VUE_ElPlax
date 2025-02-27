@@ -61,6 +61,18 @@ async function getProfesoresID(id) {
     console.error('Error al obtener profesores:', error); // Muestra errores en la consola
   }
 }
+function getProfesorID(id) {
+  const fetchProfesorID = async () => {
+    try {
+      const result = await turso.execute('SELECT * FROM profesores WHERE id_profesor = ?', [id]); // Ejecuta la consulta
+      console.log(result.rows); // Muestra los datos en la consola
+      return result;
+    } catch (error) {
+      console.error('Error al obtener profesores:', error); // Muestra errores en la consola
+    }
+  };
+  return { fetchProfesorID };
+}
 
 function getClaseID(id) {
   const fetchClaseID = async () => {
@@ -73,6 +85,18 @@ function getClaseID(id) {
     }
   };
   return { fetchClaseID };
+}
+function getAsignacionesID(id) {
+  const fetchAsignacionesID = async () => {
+    try {
+      const result = await turso.execute('SELECT * FROM asignaciones WHERE id_asignacion = ?', [id]); // Ejecuta la consulta
+      console.log(result.rows); // Muestra los datos en la consola
+      return result;
+    } catch (error) {
+      console.error('Error al obtener asignaciones:', error); // Muestra errores en la consola
+    }
+  };
+  return { fetchAsignacionesID };
 }
 
 function getEmpresas() {
@@ -255,6 +279,15 @@ async function deleteEmpresaId(id) {
   }
 }
 
+async function deleteProfesorId(id) {
+  try {
+    const result = await turso.execute('DELETE FROM profesores WHERE id_profesor = ?', [id]); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al eliminar profesores:', error); // Muestra errores en la consola
+  }
+}
+
 async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccion, email, telefono, vehiculo) {
   try {
     const tieneVehiculo = vehiculo ? 1 : 0; // Convertimos el boolean a un valor 1 o 0
@@ -270,6 +303,21 @@ async function putEstudianteId(id, dni, nombre, apellido, curso, fecha, direccio
     console.log(result.rows); // Muestra los datos en la consola
   } catch (error) {
     console.error('Error al actualizar estudiantes:', error); // Muestra errores en la consola
+  }
+}
+async function putProfesorId(id, nombre, apellido, email, fecha_nacimiento, contrasena, id_clase) {
+  try {
+    const query = `
+        UPDATE profesores
+        SET nombre = ?, apellido = ?, email = ?, fecha_nacimiento = ?, contrasena = ?, id_clase = ?
+        WHERE id_profesor = ?
+        `;
+    const values = [nombre, apellido, email, fecha_nacimiento, contrasena, id_clase, id];
+
+    const result = await turso.execute(query, values); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al actualizar profesores:', error); // Muestra errores en la consola
   }
 }
 
@@ -302,6 +350,36 @@ async function putClaseId(id, nombre_clase, id_profesor) {
     console.log(result.rows); // Muestra los datos en la consola
   } catch (error) {
     console.error('Error al actualizar clases:', error); // Muestra errores en la consola
+  }
+}
+async function postInsertarProfesores(nombre, apellido, email, fecha_nacimiento, contrasena, id_clase){
+  try {
+    const query = `
+        INSERT INTO profesores (nombre, apellido, email, fecha_nacimiento, contrasena, id_clase) 
+        VALUES (?, ?, ?, ?, ?, ?)
+        `;
+    const values = [nombre, apellido, email, fecha_nacimiento, contrasena, id_clase];
+
+    const result = await turso.execute(query, values); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al insertar profesores:', error); // Muestra errores en la consola
+  }
+}
+
+async function putAsignacionId(id, id_estudiante, id_empresa, fecha_asignacion, fecha_finalizacion) {
+  try {
+    const query = `
+        UPDATE asignaciones 
+        SET id_estudiante = ?, id_empresa = ?, fecha_asignacion = ?, fecha_finalizacion = ? 
+        WHERE id_asignacion = ?
+        `;
+    const values = [id_estudiante, id_empresa, fecha_asignacion, fecha_finalizacion, id];
+
+    const result = await turso.execute(query, values); // Ejecuta la consulta
+    console.log(result.rows); // Muestra los datos en la consola
+  } catch (error) {
+    console.error('Error al actualizar asignaciones:', error); // Muestra errores en la consola
   }
 }
 
@@ -412,5 +490,11 @@ export {
   putClaseId,
   getClaseID,
   deleteClaseId,
-  deleteAsignacionId
+  deleteAsignacionId,
+  getAsignacionesID,
+  putAsignacionId,
+  postInsertarProfesores,
+  deleteProfesorId,
+  putProfesorId,
+  getProfesorID
 }

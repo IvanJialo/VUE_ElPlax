@@ -29,7 +29,7 @@ onMounted(async () => {
                 const clase = result.rows[0];
                 form.value = {
                     nombre_clase: clase.nombre_clase,
-                    id_profesor: profesores.value.find(profesor => profesores.id_profesor === clase.id_profesor)?.nombre || "",
+                    id_profesor: clase.id_profesor,
                 };
             }
         } catch (error) {

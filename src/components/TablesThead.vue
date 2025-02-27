@@ -27,6 +27,10 @@ defineProps({
     type: Boolean,
     default: false, // Valor por defecto
   },
+  profesor: {
+    type: Boolean,
+    default: false, // Valor por defecto
+  },
 });
 </script>
 
@@ -119,6 +123,20 @@ defineProps({
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Nombre</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Profesor</th>
           <th class="px-4 py-3 text-left font-semibold text-gray-700">Acciones</th>
+        </tr>
+      </thead>
+
+      <!-- Cabecera para Profesores -->
+      <thead class="bg-gray-100" v-if="profesor && !empresa && !estudiante && !asignacion && !registro && !crearPDF">
+        <tr>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">ID</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Nombre</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Apellido</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Email</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Fecha Nacimiento</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Contraseña</th>
+          <th class="px-4 py-3 text-left font-semibold text-gray-700">Clase</th>
+          <th class="px-4 py-3 text-center font-semibold text-gray-700">Acciones</th>
         </tr>
       </thead>
     <!-- </table> -->
