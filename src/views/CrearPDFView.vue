@@ -1,3 +1,51 @@
+<template>
+  <div>
+    <p v-if="error" class="text-red-500">{{ error }}</p>
+    <div v-else>
+      <div class="flex flex-col space-y-4">
+        <div class="flex flex-col">
+          <label for="observacion" class="block text-sm font-medium text-gray-700">Observaciones</label>
+          <textarea
+            v-model="txtDocumentPDF"
+            id="observacion"
+            class="w-full rounded-lg border-gray-200 focus:border-purple-500 focus:ring-purple-500 p-3 text-sm shadow-sm"
+            placeholder="Notas adicionales..."
+            rows="4"
+          ></textarea>
+        </div>
+        <div class="flex justify-end">
+          <button @click="botonCrearPDF" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Crear PDF</button>
+        </div>
+      </div>
+
+      <!-- Componente de filtro -->
+      <FilterInput @filter="handleFilter" placeholder="Buscar por empresa o profesor..." />
+
+      <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
+        <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
+          <!-- Renderizar encabezado de registros -->
+          <TablesThead :crearPDF="true" />
+
+          <!-- Renderizar tabla de registros filtrados -->
+          <AllTable
+            v-for="registro in filteredRegistros"
+            :key="registro.id_registros"
+            :registro="registro"
+          />
+        </table>
+      </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <ModalConfirmation
+      :isOpen="isModalOpen"
+      title="PDF Creado"
+      message="El PDF se ha creado correctamente."
+      @close="closeModal"
+    />
+  </div>
+</template>
+
 <script setup>
 import { ref, onMounted, computed } from "vue";
 import jsPDF from "jspdf";
@@ -7,6 +55,7 @@ import TablesThead from "../components/TablesThead.vue";
 import { getRegistros, getRegistrosID, getEmpresas, getProfesores, getProfesoresID } from "../composables/useDatabase";
 import { getListaDocumentoRegistros } from '../composables/usePDF';
 import FilterInput from '../components/FilterInput.vue'; // Importar el componente de filtro
+import ModalConfirmation from '../components/ModalConfirmation.vue'; // Importar el componente del modal
 
 // Estados reactivos
 const registros = ref([]);
@@ -17,6 +66,7 @@ const txtDocumentPDF = ref('');
 const lista = ref([]);
 const crearPDF = ref(false);
 const filterText = ref(''); // Estado para el filtro
+const isModalOpen = ref(false); // Estado para el modal
 
 // Función para manejar el filtro
 function handleFilter(value) {
@@ -167,45 +217,12 @@ async function botonCrearPDF() {
   });
 
   doc.save("Listado_Registros.pdf");
+
+  // Abrir el modal después de crear el PDF
+  isModalOpen.value = true;
 }
+
+const closeModal = () => {
+  isModalOpen.value = false;
+};
 </script>
-
-<template>
-  <div>
-    <p v-if="error" class="text-red-500">{{ error }}</p>
-    <div v-else>
-      <div class="flex flex-col space-y-4">
-        <div class="flex flex-col">
-          <label for="observacion" class="block text-sm font-medium text-gray-700">Observaciones</label>
-          <textarea
-            v-model="txtDocumentPDF"
-            id="observacion"
-            class="w-full rounded-lg border-gray-200 focus:border-purple-500 focus:ring-purple-500 p-3 text-sm shadow-sm"
-            placeholder="Notas adicionales..."
-            rows="4"
-          ></textarea>
-        </div>
-        <div class="flex justify-end">
-          <button @click="botonCrearPDF" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Crear PDF</button>
-        </div>
-      </div>
-
-      <!-- Componente de filtro -->
-      <FilterInput @filter="handleFilter" placeholder="Buscar por empresa o profesor..." />
-
-      <div class="overflow-x-auto rounded-xl shadow-lg border border-gray-200 my-4">
-        <table class="min-w-full divide-y divide-gray-300 bg-white text-sm">
-          <!-- Renderizar encabezado de registros -->
-          <TablesThead :crearPDF="true" />
-
-          <!-- Renderizar tabla de registros filtrados -->
-          <AllTable
-            v-for="registro in filteredRegistros"
-            :key="registro.id_registros"
-            :registro="registro"
-          />
-        </table>
-      </div>
-    </div>
-  </div>
-</template>
