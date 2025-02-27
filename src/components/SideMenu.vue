@@ -236,7 +236,7 @@ function registros() {
                     <ExportData />
                     <span
                       class="text-nowrap invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
-                      Exportar
+                      Exportar CSV
                     </span>
                   </a>
                 </li>
@@ -358,6 +358,39 @@ function registros() {
               <details class="group [&_summary::-webkit-details-marker]:hidden">
                 <summary
                   class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                  <span class="text-sm font-medium"> Asignaciones </span>
+
+                  <span class="shrink-0 transition duration-300 group-open:-rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </span>
+                </summary>
+
+                <ul class="mt-2 space-y-1 px-4">
+                  <li>
+                    <button @click.prevent="crearAsignaciones"
+                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      Crear Asignaciones
+                    </button>
+                  </li>
+
+                  <li>
+                    <button @click.prevent="asignaciones"
+                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+                      Información
+                    </button>
+                  </li>
+                </ul>
+              </details>
+            </li>
+
+            <li>
+              <details class="group [&_summary::-webkit-details-marker]:hidden">
+                <summary
+                  class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                   <span class="text-sm font-medium"> Profesores </span>
 
                   <span class="shrink-0 transition duration-300 group-open:-rotate-180">
@@ -423,39 +456,6 @@ function registros() {
               <details class="group [&_summary::-webkit-details-marker]:hidden">
                 <summary
                   class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                  <span class="text-sm font-medium"> Asignaciones </span>
-
-                  <span class="shrink-0 transition duration-300 group-open:-rotate-180">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clip-rule="evenodd" />
-                    </svg>
-                  </span>
-                </summary>
-
-                <ul class="mt-2 space-y-1 px-4">
-                  <li>
-                    <button @click.prevent="crearAsignaciones"
-                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Crear Asignaciones
-                    </button>
-                  </li>
-
-                  <li>
-                    <button @click.prevent="asignaciones"
-                      class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Información
-                    </button>
-                  </li>
-                </ul>
-              </details>
-            </li>
-
-            <li>
-              <details class="group [&_summary::-webkit-details-marker]:hidden">
-                <summary
-                  class="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
                   <span class="text-sm font-medium"> Registros </span>
 
                   <span class="shrink-0 transition duration-300 group-open:-rotate-180">
@@ -504,7 +504,7 @@ function registros() {
                   <li>
                     <button @click.prevent="exportarCSV" @click="toggleMenu"
                       class="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                      Estudiantes y Empresas en CSV
+                      Empresas en CSV
                     </button>
                   </li>
 
