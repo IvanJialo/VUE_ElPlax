@@ -58,7 +58,7 @@ const limpiarFormulario = () => {
                     <!-- Campos obligatorios -->
                     <div class="space-y-4">
                         <div>
-                            <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre clase</label>
+                            <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre clase*</label>
                             <input v-model="form.nombre_clase" id="nombre" type="text" required
                                 class="w-full rounded-lg border-gray-200 focus:border-purple-500 p-3 text-sm shadow-sm"
                                 placeholder="Nombre" />
