@@ -133,7 +133,7 @@ const guardarasignacion = async () => {
 
                     <button type="submit"
                         class="block w-full rounded-lg bg-gradient-to-r from-[#b197ff] via-purple-500 to-[#b197ff] px-5 py-3 mt-6 text-sm font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-purple-400">
-                        {{ esEdicion ? "Actualizar Empresa" : "Registrar Empresa" }}
+                        {{ esEdicion ? "Actualizar Asignación" : "Registrar Asignación" }}
                     </button>
 
                     <p v-if="mensaje" class="mt-4 text-center text-sm font-medium"

@@ -20,6 +20,7 @@ import editarAsignacion from '../views/EditarAsignacionView.vue'
 import crearProfesor from '../views/CrearProfesorView.vue'
 import tablaProfesores from '../views/TablaProfesoresView.vue'
 import editarProfesor from '../views/EditarProfesorView.vue'
+import perfil from '../views/PerfilView.vue'
 
 // Función para verificar autenticación
 function isAuthenticated() {
@@ -33,6 +34,12 @@ const router = createRouter({
       path: '/',
       name: 'login',
       component: Login,
+    },
+    {
+      path: '/perfil',
+      name: 'perfil',
+      component: perfil,
+      meta: { requiresAuth: true },
     },
     {
       path: '/home',

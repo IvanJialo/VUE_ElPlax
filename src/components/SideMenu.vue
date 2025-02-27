@@ -109,9 +109,17 @@ function registros() {
       <div class="flex h-screen w-16 flex-col justify-between border-e bg-white">
         <div>
           <div class="inline-flex size-16 items-center justify-center">
-            <span class="grid size-10 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
-              L
-            </span>
+            <RouterLink to="/perfil"
+              class="group relative grid size-10 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600 ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                <path fill="#b197ff"
+                  d="M12 2a4 4 0 1 1-4 4 4 4 0 0 1 4-4m0 10c-4.42 0-8 1.79-8 4v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-2c0-2.21-3.58-4-8-4m-6 5v-1c0-.68 2.69-2 6-2s6 1.32 6 2v1zM18 3h2v2h-2zm0 4h2v2h-2z" />
+              </svg>
+              <span
+                class="text-nowrap invisible absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white group-hover:visible">
+                Perfil
+              </span>
+            </RouterLink>
           </div>
 
           <div class="border-t border-gray-100">
