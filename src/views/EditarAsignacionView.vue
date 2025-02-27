@@ -53,7 +53,7 @@ onMounted(async () => {
 const guardarasignacion = async () => {
     try {
         if (esEdicion.value) {
-            await putasignacionId(
+            await putAsignacionId(
                 idAsignacion,
                 form.value.id_estudiante,
                 form.value.id_empresa,
@@ -94,7 +94,7 @@ const guardarasignacion = async () => {
                                 <option v-for="estudiante in estudiantes" :key="estudiante.id_estudiante"
                                     :value="estudiante.id_estudiante"
                                     :selected="estudiante.id_estudiante === form.id_estudiante">
-                                    {{ estudiante.nombre }}
+                                    {{ estudiante.nombre +  " " + estudiante.apellido }}
                                 </option>
                             </select>
                         </div>
