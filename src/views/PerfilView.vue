@@ -134,7 +134,7 @@ const editarPng = (nombre) => {
         <div class="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
             <h2
                 class="text-center font-bold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#DCD0FF] via-purple-500 to-[#b197ff] sm:text-3xl mb-6">
-                {{ esEdicion ? "Perfil Profesor" : "Perfil Profesor" }}
+                {{ esEdicion ? "Perfil Docente" : "Perfil Docente" }}
             </h2>
 
             <!-- Imagen del Profesor -->
